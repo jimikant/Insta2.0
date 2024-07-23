@@ -1,0 +1,27 @@
+<br/>
+<h4> Here is the Settings Section  </h4>
+<br/>
+<div class= "settings">
+  <ul class= "settings-items">  
+    <li>
+      <%= link_to "Add Tags", tags_path, class: "btn btn-primary" %>
+      <br/><br/>
+      <%= button_to 'Delete User', destroy_user_path(@user), method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure delete User?'}, class: "btn btn-danger" %>
+      <br/>
+      
+      <% if current_user.current_subscription.present? %>
+        <%= button_to 'Cancel Subscription', destroy_subscription_path(@subscription.stripe_subscription_id), method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure you want to cancel your subscription?' }, class: "btn btn-danger" %>
+      <% else %>
+        <%= link_to 'Subscription', subscriptions_path,  class: "btn btn-warning"%>
+      <% end %>
+      
+    </li>
+  </ul>
+</div>
+<br/><br/>
+<% if current_user.admin?%>
+  <%= link_to 'Go to All Posts', dashboard_path, class: "btn btn-secondary" %> | 
+  <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
+<% else %>
+  <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary" %> | 
+<% end %>

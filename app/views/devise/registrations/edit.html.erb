@@ -1,0 +1,76 @@
+<h2>Edit <%= resource_name.to_s.humanize %></h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+
+  <div class= "form-group">
+    <%= f.label :username, class: "col-sm-2 control-label" %>
+    <%= f.text_field :username, class: "form-control", autofocus: true, autocomplete: "email" %>
+    <% if @user.errors[:username].any? %>
+      <div class="error_messages">
+        <%= @user.errors[:username].join(", ") %>
+      </div>
+    <% end %>
+  </div>
+<br/>
+  <div class= "form-group">
+    <%= f.label :email, class: "col-sm-2 control-label" %>
+    <%= f.email_field :email, class: "form-control", autofocus: true, autocomplete: "email" %>
+    <% if @user.errors[:email].any? %>
+      <div class="error_messages">
+        <%= @user.errors[:email].join(", ") %>
+      </div>
+    <% end %>
+  </div>
+<br/>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div class= "form-group">
+    <%= f.label :password, class: "col-sm-2 control-label" %><i>(leave blank if you don't want to change it)</i>
+    <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
+    <% if @user.errors[:password].any? %>
+      <div class="error_messages">
+        <%= @user.errors[:password].join(", ") %>
+      </div>
+    <% end %>
+  </div>
+<br/>
+
+  <div class= "form-group">
+    <%= f.label :password_confirmation, class: "col-sm-2 control-label" %>
+    <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
+    <% if @user.errors[:password_confirmation].any? %>
+      <div class="error_messages">
+        <%= @user.errors[:password_confirmation].join(", ") %>
+      </div>
+    <% end %>
+  </div>
+<br/>
+
+
+  <div class= "form-group">
+    <%= f.label :current_password, class: "col-sm-2 control-label" %><i>(we need your current password to confirm your changes)</i>
+    <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password" %>
+    <% if @user.errors[:current_password].any? %>
+      <div class="error_messages">
+        <%= @user.errors[:current_password].join(", ") %>
+      </div>
+    <% end %>
+  </div>
+<br/>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit "Update", class: "btn btn-primary" %>
+    </div>
+  </div>
+
+<% end %>
+
+<h3>Cancel my account</h3>
+
+<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger" %></div>
+
+<%= link_to "Back", :back %>

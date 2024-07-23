@@ -1,0 +1,30 @@
+Using the default profile...
+Feature: User login
+
+  Scenario: Successful login                       [90m# features/login.feature:3[0m
+    [32mGiven I am on the login page[90m                   # features/step_definitions/login_steps.rb:1[0m[0m
+    [31mWhen I fill in [31m[1m"Email"[0m[0m[31m with [31m[1m"user@example.com"[0m[0m[31m[90m # features/step_definitions/login_steps.rb:5[0m[0m
+[31m      Unable to find field "Email" that is not disabled (Capybara::ElementNotFound)[0m
+[31m      ./features/step_definitions/login_steps.rb:6:in `"I fill in {string} with {string}"'[0m
+[31m      features/login.feature:5:in `I fill in "Email" with "user@example.com"'[0m
+    [36mAnd I fill in [36m[1m"Password"[0m[0m[36m with [36m[1m"password"[0m[0m[36m[90m       # features/step_definitions/login_steps.rb:5[0m[0m
+    [36mAnd I press [36m[1m"Log in"[0m[0m[36m[90m                           # features/step_definitions/login_steps.rb:9[0m[0m
+    [36mThen I should see [36m[1m"Welcome"[0m[0m[36m[90m                    # features/step_definitions/login_steps.rb:13[0m[0m
+
+  Scenario: Unsuccessful login                      [90m# features/login.feature:10[0m
+    [32mGiven I am on the login page[90m                    # features/step_definitions/login_steps.rb:1[0m[0m
+    [31mWhen I fill in [31m[1m"Email"[0m[0m[31m with [31m[1m"wrong@example.com"[0m[0m[31m[90m # features/step_definitions/login_steps.rb:5[0m[0m
+[31m      Unable to find field "Email" that is not disabled (Capybara::ElementNotFound)[0m
+[31m      ./features/step_definitions/login_steps.rb:6:in `"I fill in {string} with {string}"'[0m
+[31m      features/login.feature:12:in `I fill in "Email" with "wrong@example.com"'[0m
+    [36mAnd I fill in [36m[1m"Password"[0m[0m[36m with [36m[1m"wrongpassword"[0m[0m[36m[90m   # features/step_definitions/login_steps.rb:5[0m[0m
+    [36mAnd I press [36m[1m"Log in"[0m[0m[36m[90m                            # features/step_definitions/login_steps.rb:9[0m[0m
+    [36mThen I should see [36m[1m"Invalid email or password"[0m[0m[36m[90m   # features/step_definitions/login_steps.rb:13[0m[0m
+
+[31mFailing Scenarios:[0m
+[31mcucumber features/login.feature:3[0m[90m # Scenario: Successful login[0m
+[31mcucumber features/login.feature:10[0m[90m # Scenario: Unsuccessful login[0m
+
+2 scenarios ([31m2 failed[0m)
+10 steps ([31m2 failed[0m, [36m6 skipped[0m, [32m2 passed[0m)
+0m0.070s

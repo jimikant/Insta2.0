@@ -1,0 +1,32 @@
+<h1>Subscription Plans</h1>
+<br/>
+
+<div class="container">
+  <div class="row">
+    <% @products.each do |product| %>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <% if product.image.attached? %>
+            <div class="card-img-top">
+              <%= image_tag product.image, class: 'card-img-top' %>
+            </div>
+          <% else %>
+            <div class="card-img-top">
+              <%= image_tag 'uploading_posts.jpg', class: 'card-img-top' %>
+            </div>
+          <% end %>
+          <div class="card-body">
+            <h5 class="card-title"><%= product.name %></h5>
+            <p class="card-text"><%= product.description %></p>
+            <p class="price-text"><strong>$<%= product.price %> per month</strong></p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <%= button_to "Subscribe", subscription_create_path(product.stripe_product_id), data: { turbo: false }, class: "btn btn-warning", remote: true %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<div class= "contant-for">
+  <div class= "users-signout">
+    <% content_for :Signout do %>
+      <% if user_signed_in? %>
+        <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-secondary", method: :delete %>
+      <% else %>
+        <%= link_to 'Sign in', new_user_session_path, class: "btn btn-primary" %>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <div class= "users-settings">
+    <% content_for :Settings do %>
+      <%= link_to "Settings", settings_user_path, class: "btn btn-info justify-content-start" %>
+    <% end %>
+  </div>
+</div>
+
+<br/>
+<h4>My Profile</h4>
+
+<% if @user.profile.present? %>
+  <% if @user.profile.avtar.attached? %>
+    <%= image_tag @user.profile.avtar_variant, class: 'avtar' %>
+  <% else %>
+    <%= image_tag 'default_avtar.png', class: 'avtar' %>
+  <% end %>
+  
+  <br/>
+  <br/>
+
+  <p><strong>First name:</strong> <%= @user.profile.first_name %></p>
+  <p><strong>Last name:</strong> <%= @user.profile.last_name %></p>
+  <p><strong>Phone:</strong> <%= @user.profile.phone %></p>
+  <p><strong>Address:</strong> <%= @user.profile.address %></p>
+  <%# <%= link_to 'Edit Profile', edit_profile_path, class: "btn btn-warning" %>
+  <%# <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
+  <br/>
+  <%# <%= button_to 'Delete', destroy_profile_path, method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure delete Profile?'}, class: "btn btn-danger" %>
+<% else %>
+  <br/>
+  <%# <%= link_to "New Profile", new_profile_path, class: "btn btn-primary custom-post-button" %>
+  <%# <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
+<% end %>
+
+
+<hr class="my-4 border-dark" style="border-top: 2px dashed;" />
+<br/>
+
+<h4>My Posts</h4>
+<br/>
+<%# <%= link_to "New Post", new_post_path, class: "btn btn-primary custom-post-button" %>
+<%# <%= link_to "Edit Post", edit_post_path, class: "btn btn-warning" %>
+<%# <%= link_to "show Post", post_path, class: "btn btn-secondary" %>
+
+
+<div class="container">
+  <div class= "row justify-content-center" >
+    <div class="col-md-6">
+      <% @posts.each do |post| %>
+        <div class="card mt-3">
+          <div class="card-body text-center">
+
+            <% if post.image.attached? %>
+              <%= image_tag url_for(post.image), class: "img-thumbnail custom-img-size mb-3" %>
+            <% end %>
+            
+            <p class="card-title"><strong>Title:</strong> <%= post.title %></p>
+            <% if post.tags.any? %>
+              <p class="card-title "><strong>Tags:</strong>
+              <% post.tags.each do |tag| %>
+              <span class= "tag text-white bg-dark rounded p-1"><%= tag.name %></span>
+              <% end %>
+              </p>
+            <% else %>
+              <p class="card-title"><strong>No Tags available</strong></p>
+            <% end %>
+
+            <!-- toggle button for liking/disliking -->
+            <div class= "post-container-toggel d-flex justify-content-center align-items-center">
+              <div class= "count-toggle">
+                <span class="likes-count">
+                  <strong><%= post.likes_count %></strong> Likes
+                </span>
+              </div>
+
+              <% if @can_like %>             
+                <div class="toggle">
+                  <% if post.likes.where(user: @user).exists? %>
+                    <%= form_with(url: destroy_like_path(user_id: @user.id, id: post.likes.find_by(user: @user).id), method: :delete) do |form| %>
+                      <%= form.radio_button :like, true, id: "like1", class: "d-none" %>
+                      <%= form.label :like, class: "like-btn btn btn-outline-danger", id: "liked", for: "like1" do %>
+                        <span class = "like-text" id="like-text1">Liked</span>
+                      <% end %>
+                    <% end %>
+                  <% else %>
+                    <%= form_with(url: likes_path(user_id: @user.id, post_id: post.id), method: :post) do |form| %>
+                      <%= form.radio_button :like, true, id: "like2", class: "d-none" %>
+                      <%= form.label :like, class: "like-btn btn btn-outline-danger", id: "like", for: "like2" do %>
+                        <span class = "like-text" id="like-text2">Like</span>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

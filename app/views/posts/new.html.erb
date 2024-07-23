@@ -1,0 +1,10 @@
+<br/>
+<h4>Create New Post</h4>
+
+<%= render "form", post: @post %>
+<br/>
+<% if current_user.admin? %>
+  <%= link_to 'Back to UserList',  user_index_path, class: "btn btn-secondary" %>
+<% else %>
+  <%= link_to 'Back to Posts', profile_path, class: "btn btn-secondary" %>
+<% end %>

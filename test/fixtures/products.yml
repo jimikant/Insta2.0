@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stripe_product_id: MyString
+  name: MyString
+  description: MyText
+  price: 1
+  currency: MyString
+  active: false
+
+two:
+  stripe_product_id: MyString
+  name: MyString
+  description: MyText
+  price: 1
+  currency: MyString
+  active: false

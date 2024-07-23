@@ -1,0 +1,146 @@
+<div class= "contant-for">
+  <div class= "users-signout">
+    <% content_for :Signout do %>
+      <% if user_signed_in? %>
+        <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-secondary", method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure you want to Logout?'} %>
+      <% else %>
+        <%= link_to 'Sign in', new_user_session_path, class: "btn btn-primary" %>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <div class= "users-settings">
+    <% content_for :Settings do %>
+      <%= link_to "Settings", settings_user_path, class: "btn btn-info justify-content-start" %>
+    <% end %>
+  </div>
+</div>
+
+<br/>
+<% if current_user.profile.present? %>
+  <h4>Welcome <%= current_user.profile.first_name %></h4>
+<% else %>
+  <h4>Welcome <%= current_user.username %></h4>
+<% end %>
+<br/>
+
+<div class="header bg-white" style="display: flex; flex-direction: row; justify-content: flex-start; overflow-x: auto; white-space: nowrap;">
+  <% @users.each do |user| %>
+    <div class= "username text-start m-4">
+      <span class= "text-dark text-decoration-none">
+        <% if user&.profile&.avtar&.attached? %>
+          <div class="avtar-preview">
+            <%= image_tag user.profile.avtar_variant, class: 'avtar useravtar' %>
+            <% if user.profile.present? %>
+              <span class= "m-2"><strong><%= user.profile.first_name %></strong></span>
+            <% else %>
+              <span class= "m-2"><strong><%= user.username %></strong></span>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="avtar-preview">
+            <%= image_tag 'default_avtar.png', class: 'avtar useravtar' %>
+            <% if user.profile.present? %>
+              <span class= "m-2"><strong><%= user.profile.first_name %></strong></span>
+            <% else %>
+              <span class= "m-2"><strong><%= user.username %></strong></span>
+            <% end %>
+          </div>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+</div>
+<br/>
+<hr class="my-4 border-dark" style="border-top: 2px dashed;" />
+<br/>
+
+
+<%# Posts Section %>
+<%# <h4>Posts</h4> %>
+
+<% @posts.each do |post| %>
+  <div class="container">
+    <div class= "row justify-content-center" >
+      <div class="col-md-6">
+        <div class="card mt-3">
+          <div class="card-body text-center">
+  
+            <div class= "username text-start m-2">
+
+              <a href="<%= post_path(post) %>" class="text-dark text-decoration-none">
+                <% if post&.user&.profile&.avtar&.attached? %>
+                  <div class="avtar-preview">
+                    <%= image_tag post.user.profile.avtar_variant, class: 'postavtar' %>
+                    <% if post.user.profile.present? %>
+                      <span><strong><%= post.user.profile.first_name %></strong></span>
+                    <% else %>
+                      <span><strong><%= post.user.username %></strong></span>
+                    <% end %>
+                  </div>
+                <% else %>
+                  <div class="avtar-preview">
+                    <%= image_tag 'default_avtar.png', class: 'postavtar' %>
+                    <% if post.user.profile.present? %>
+                      <span><strong><%= post.user.profile.first_name %></strong></span>
+                    <% else %>
+                      <span><strong><%= post.user.username %></strong></span>
+                    <% end %>
+                  </div>
+                <% end %>
+              </a>
+              
+            </div>
+                
+            <div class= "post-contents">
+              <% if post.image.attached? %>
+                <%= image_tag url_for(post.image), class: "img-thumbnail custom-img-size mb-3" %>
+              <% end %>
+              <p class="card-title"><strong>Title:</strong> <%= post.title %></p>
+              <% if post.tags.any? %>
+                  <p class="card-title "><strong>Tags:</strong>
+                  <% post.tags.each do |tag| %>
+                  <span class= "tag text-white bg-dark rounded p-1"><%= tag.name %></span>
+                  <% end %>
+                  </p>
+              <% else %>
+                <p class="card-title"><strong>No Tags available</strong></p>
+              <% end %>
+            </div>
+  
+            <%# toggle button for liking/disliking %>
+            <div class= "container-toggle">
+              <div class= "count-toggle">
+                <span class="likes-count">
+                  <%= post.likes_count %>
+                </span>
+              </div>
+              <div class="toggle">
+                <% if post.likes.where(user: current_user).exists? %>
+                  <%= form_with(url: destroy_like_path(user_id: current_user.id, id: post.likes.find_by(user: current_user).id), method: :delete) do |form| %>
+                    <%= form.radio_button :like, true, id: "like1", class: "d-none" %>
+                    <%= form.label :like, class: "like-btn btn btn-outline-danger", id: "liked", for: "like1" do %>
+                      <span class = "like-text" id="like-text1">Like</span>
+                    <% end %>
+                  <% end %>
+                <% else %>
+                  <%= form_with(url: likes_path(user_id: current_user.id, post_id: post.id), method: :post) do |form| %>
+                    <%= form.radio_button :like, true, id: "like2", class: "d-none" %>
+                    <%= form.label :like, class: "like-btn btn btn-outline-danger", id: "like", for: "like2" do %>
+                      <span class = "like-text" id="like-text2">Like</span>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+<br/>
+<div class= "pagination justify-content-center">
+  <%= paginate @posts %>
+</div>

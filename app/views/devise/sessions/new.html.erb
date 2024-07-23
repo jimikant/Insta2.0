@@ -1,0 +1,45 @@
+<br/>
+<h2>Log in</h2>
+<br/>
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+
+  <div class= "form-group">
+    <%= f.label :email, class: "col-sm-2 control-label" %>
+    <%= f.email_field :email, class: "form-control", autofocus: true, autocomplete: "email" %>
+    <% if @user.errors[:email].any? %>
+      <div class="error_messages">
+        <%= @user.errors[:email].join(", ") %>
+      </div>
+    <% end %>
+  </div>
+<br/>
+
+  <div class= "form-group">
+    <%= f.label :password, class: "col-sm-2 control-label" %>
+    <%= f.password_field :password, class: "form-control", autocomplete: "current-password" %>
+    <% if @user.errors[:password].any? %>
+      <div class="error_messages">
+        <%= @user.errors[:password].join(", ") %>
+      </div>
+    <% end %>
+  </div>
+<br/>
+
+  <% if devise_mapping.rememberable? %>
+    <div class="form-group">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  <% end %>
+<br/>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit "Log in", class: "btn btn-primary" %>
+    </div>
+  </div>
+
+<% end %>
+<br/>
+<%= render 'devise/shared/links' %>

@@ -1,0 +1,91 @@
+/* Application_logo */
+.logo{
+  border-radius: 15%;
+  border: outset;
+  width: 110%;
+  height: 62px;
+  object-fit: cover;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+
+/* Error_message */
+.error_messages {
+  color: red;
+  font-size: medium;
+}
+/* Navigation_bar */
+.user-profile-btn-group{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 34vh;
+  align-items: center;
+}
+.menu-signout{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 88px;
+}
+.card-body .custom-img-size {
+  aspect-ratio: 1;
+  max-width: 40rem;
+  height: 60vh;
+}
+.table {
+  text-align: center;
+}
+.body{
+  background-color: aliceblue;
+}
+.settings-items > li{
+  list-style: none;
+}
+
+/* Likes */
+#liked{
+  color: white;
+  background: #dc3545;
+}
+.container-toggle{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.count-toggle{
+  margin-right: 10px ;
+}
+
+
+/* Global_Avtar_Preview */
+.avtar{
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Post_Avtar_Preview */
+.postavtar{
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+/* Enlarging_avtar */
+.enlarged {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}

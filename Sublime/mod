@@ -1,0 +1,68 @@
+# describe 'callbacks' do
+#     it 'normalizes email before validation' do
+#       user.email = "TEST@EXAMPLE.COM"
+#       user.valid?
+#       expect(user.email).to eq("test@example.com")
+#     end
+
+#     it 'enqueues welcome email after create' do
+#       allow(MailerJob).to receive(:perform_async)
+#       user.save
+#       expect(MailerJob).to have_received(:perform_async).with(user.id)
+#     end
+
+#     it 'creates a Stripe customer after create' do
+#       allow(Stripe::Customer).to receive(:create).and_return(double(id: "stripe_customer_id"))
+#       user.save
+#       expect(user.stripe_customer_id).to eq("stripe_customer_id")
+#     end
+
+#     it 'updates Stripe customer after update' do
+#       user.save
+#       allow(Stripe::Customer).to receive(:update)
+#       user.username = "updated_username"
+#       user.save
+#       expect(Stripe::Customer).to have_received(:update).with(user.stripe_customer_id, email: user.email, name: user.username)
+#     end
+
+#     it 'deletes Stripe customer after destroy' do
+#       user.save
+#       allow(Stripe::Customer).to receive(:delete)
+#       user.destroy
+#       expect(Stripe::Customer).to have_received(:delete).with(user.stripe_customer_id)
+#     end
+#   end
+
+#   describe 'enum' do
+#     it 'defines roles' do
+#       expect(User.roles).to eq({"user" => 0, "admin" => 1})
+#     end
+
+#     it 'can set role to admin' do
+#       user.admin!
+#       expect(user.admin?).to be true
+#     end
+#   end
+
+#   describe 'scopes' do
+#     it 'orders users in ascending order' do
+#       user2 = create(:user)
+#       user3 = create(:user)
+#       user.save
+#       expect(User.user_asc_order).to eq([user, user2, user3].sort_by(&:created_at))
+#     end
+
+#     it 'default scope orders users in descending order' do
+#       user2 = create(:user)
+#       user3 = create(:user)
+#       user.save
+#       expect(User.all).to eq([user3, user2, user].sort_by(&:created_at).reverse)
+#     end
+#   end
+
+#   describe '#current_subscription' do
+#     it 'returns the active subscription' do
+#       subscription = create(:subscription, user: user, active: true)
+#       expect(user.current_subscription).to eq(subscription)
+#     end
+#   end

@@ -1,0 +1,45 @@
+<div class= "contant-for">
+  <div class= "users-signout">
+    <% content_for :Signout do %>
+      <% if user_signed_in? %>
+        <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-secondary", method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure you want to Logout?'} %>
+      <% else %>
+        <%= link_to 'Sign in', new_user_session_path, class: "btn btn-primary" %>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <div class= "users-settings">
+    <% content_for :Settings do %>
+      <%= link_to "Settings", settings_user_path, class: "btn btn-info justify-content-start" %>
+    <% end %>
+  </div>
+</div>
+
+<br/>
+
+<h4>Users List</h4>
+
+<table class="table table-striped" border="2">
+  <thead>
+    <tr>
+      <th>Role</th>
+      <th>Email</th>
+      <th colspan="3">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.role %></td>
+        <td><%= user.email %></td>
+        <td><%= link_to 'Show', user_path(user), class: "btn btn-info" %></td>
+        <td><%= link_to 'Edit', edit_user_path(user), class: "btn btn-warning" %></td>
+        <td><%= button_to 'Delete', destroy_user_path(user), method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure delete User?'}, class: "btn btn-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'root', root_path, class: "btn btn-info" %>
+
