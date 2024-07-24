@@ -1,5 +1,6 @@
-class StripeSubscriptionService
+# frozen_string_literal: true
 
+class StripeSubscriptionService
   def initialize(subscription)
     @subscription = subscription
 
@@ -9,7 +10,6 @@ class StripeSubscriptionService
   end
 
   def sync_subscription_from_stripe
-
     user = User.find_by(stripe_customer_id: @subscription.customer)
 
     # p 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
@@ -26,7 +26,8 @@ class StripeSubscriptionService
 
     return unless product
 
-    subscription_record = user.subscriptions.find_or_initialize_by(stripe_subscription_id: @subscription.id, product_id: product.id)
+    subscription_record = user.subscriptions.find_or_initialize_by(stripe_subscription_id: @subscription.id,
+                                                                   product_id: product.id)
     subscription_record.product_name = product.name
     subscription_record.product_id = product.id
     subscription_record.stripe_product_id = product.stripe_product_id
@@ -42,7 +43,7 @@ class StripeSubscriptionService
     begin
       subscription_record.save!
     rescue ActiveRecord::RecordInvalid => e
-      puts "Error saving subscription: #{e.message}"
+      Rails.logger.debug { "Error saving subscription: #{e.message}" }
     end
   end
 end

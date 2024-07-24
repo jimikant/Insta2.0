@@ -1,8 +1,9 @@
-class Profile < ApplicationRecord
+# frozen_string_literal: true
 
+class Profile < ApplicationRecord
   belongs_to :user
 
-  #Attach Avtar to Profile_model
+  # Attach Avtar to Profile_model
   has_one_attached :avtar, dependent: :destroy
   def avtar_variant
     avtar.variant(resize_to_limit: [250, 250]).processed
@@ -14,7 +15,7 @@ class Profile < ApplicationRecord
   validates :address, presence: true
   validates :user_id, uniqueness: true
 
-  #Foe Friendly_id
+  # Foe Friendly_id
   extend FriendlyId
   friendly_id :first_name, use: :slugged
 

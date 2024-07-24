@@ -1,5 +1,6 @@
-class WebhooksController < ApplicationController
+# frozen_string_literal: true
 
+class WebhooksController < ApplicationController
   skip_before_action :authenticate_user!
 
   def stripe
@@ -10,7 +11,7 @@ class WebhooksController < ApplicationController
     begin
       event = Stripe::Webhook.construct_event(
         payload, sig_header, Rails.application.credentials.dig(:stripe, :webhook_secret)
-        )
+      )
     rescue JSON::ParserError => e
       render json: { error: e.message }, status: :bad_request
       return
@@ -29,7 +30,6 @@ class WebhooksController < ApplicationController
     when 'customer.deleted'
       User.find_by(stripe_customer_id: stripe_customer[:id])&.destroy
     end
-
 
     # Handle_product
     product = event.data.object
@@ -54,6 +54,5 @@ class WebhooksController < ApplicationController
     when 'customer.subscription.deleted'
       Subscription.find_by(stripe_subscription_id: subscription[:id])&.destroy
     end
-
   end
 end

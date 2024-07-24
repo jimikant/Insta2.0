@@ -1,5 +1,6 @@
-class SyncStripeProductService
+# frozen_string_literal: true
 
+class SyncStripeProductService
   def initialize(stripe_product_id)
     @stripe_product_id = stripe_product_id
   end

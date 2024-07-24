@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Ability
   include CanCan::Ability
 
@@ -32,17 +34,11 @@ class Ability
       when '#Infinite Posts'
         can :create, Post
       when '#10 Posts'
-        if user.posts.count < 10
-          can [:new, :create], Post
-        end
+        can %i[new create], Post if user.posts.count < 10
       when '#5 Posts'
-        if user.posts.count < 5
-          can [:new, :create], Post
-        end
+        can %i[new create], Post if user.posts.count < 5
       when '#2 posts'
-        if user.posts.count < 2
-          can [:new, :create], Post
-        end
+        can %i[new create], Post if user.posts.count < 2
       end
     end
   end

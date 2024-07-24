@@ -1,8 +1,9 @@
-class PostsController < ApplicationController
+# frozen_string_literal: true
 
-  before_action :find_user, except: [:index, :update]
-  before_action :set_post, except: [:index, :new, :create]
-  before_action :authorize_user, except: [:index, :show]
+class PostsController < ApplicationController
+  before_action :find_user, except: %i[index update]
+  before_action :set_post, except: %i[index new create]
+  before_action :authorize_user, except: %i[index show]
   after_action :notify_user, only: [:create]
 
   def set_post
@@ -13,12 +14,13 @@ class PostsController < ApplicationController
     @posts = Post.includes(:user, :tags).all
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @post = Post.new
   end
+
+  def edit; end
 
   def create
     @post = current_user.posts.new(post_params)
@@ -27,9 +29,6 @@ class PostsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def edit
   end
 
   def update
@@ -56,7 +55,7 @@ class PostsController < ApplicationController
   end
 
   def notify_user
-    puts "Sending notification for #{@post.title}"
+    Rails.logger.debug { "Sending notification for #{@post.title}" }
   end
 
   def post_params

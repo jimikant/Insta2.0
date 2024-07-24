@@ -1,16 +1,18 @@
-Given("I am on the login page") do
+# frozen_string_literal: true
+
+Given('I am on the login page') do
   visit new_user_session_path
 end
 
-When("I fill in {string} with {string}") do |field, value|
+When('I fill in {string} with {string}') do |field, value|
   # save_and_open_page
   fill_in field, with: value
 end
 
-When("I press {string}") do |button|
+When('I press {string}') do |button|
   click_button button
 end
 
-Then("I should see {string}") do |message|
+Then('I should see {string}') do |_message|
   expect(page).to have_content(text)
 end

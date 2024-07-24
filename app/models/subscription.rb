@@ -1,5 +1,6 @@
-class Subscription < ApplicationRecord
+# frozen_string_literal: true
 
+class Subscription < ApplicationRecord
   belongs_to :user
   belongs_to :product
 
@@ -8,12 +9,12 @@ class Subscription < ApplicationRecord
   after_destroy :cancel_user_subscription
 
   def cancel_user_subscription
-    if stripe_subscription_id.present?
-      begin
-        Stripe::Subscription.delete(stripe_subscription_id)
-      rescue Stripe::InvalidRequestError => e
-        Rails.logger.error "Stripe subscription cancellation failed: #{e.message}"
-      end
+    return if stripe_subscription_id.blank?
+
+    begin
+      Stripe::Subscription.delete(stripe_subscription_id)
+    rescue Stripe::InvalidRequestError => e
+      Rails.logger.error "Stripe subscription cancellation failed: #{e.message}"
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # hll-err.rb - Copyright (C) 2014 Salvatore Sanfilippo
 # BSD license, See the COPYING file for more information.
 #
@@ -18,71 +20,72 @@ require 'digest/sha1'
 # same, exactly the same dataset is used, and when it is different,
 # a totally unrelated different data set is used (without any common
 # element in practice).
-def run_experiment(r,seed,max,step)
-    r.del('hll')
-    i = 0
-    samples = []
-    step = 1000 if step > 1000
-    while i < max do
-        elements = []
-        step.times {
-            ele = Digest::SHA1.hexdigest(i.to_s+seed.to_s)
-            elements << ele
-            i += 1
-        }
-        r.pfadd('hll',elements)
-        approx = r.pfcount('hll')
-        err = approx-i
-        rel_err = 100.to_f*err/i
-        samples << [i,rel_err]
+def run_experiment(r, seed, max, step)
+  r.del('hll')
+  i = 0
+  samples = []
+  step = 1000 if step > 1000
+  while i < max
+    elements = []
+    step.times do
+      ele = Digest::SHA1.hexdigest(i.to_s + seed.to_s)
+      elements << ele
+      i += 1
     end
-    samples
+    r.pfadd('hll', elements)
+    approx = r.pfcount('hll')
+    err = approx - i
+    rel_err = 100.to_f * err / i
+    samples << [i, rel_err]
+  end
+  samples
 end
 
-def filter_samples(numsets,max,step,filter)
-    r = Redis.new
-    dataset = {}
-    (0...numsets).each{|i|
-        dataset[i] = run_experiment(r,i,max,step)
-        STDERR.puts "Set #{i}"
-    }
-    dataset[0].each_with_index{|ele,index|
-        if filter == :max
-            card=ele[0]
-            err=ele[1].abs
-            (1...numsets).each{|i|
-                err = dataset[i][index][1] if err < dataset[i][index][1]
-            }
-            puts "#{card} #{err}"
-        elsif filter == :avg
-            card=ele[0]
-            err = 0
-            (0...numsets).each{|i|
-                err += dataset[i][index][1]
-            }
-            err /= numsets
-            puts "#{card} #{err}"
-        elsif filter == :absavg
-            card=ele[0]
-            err = 0
-            (0...numsets).each{|i|
-                err += dataset[i][index][1].abs
-            }
-            err /= numsets
-            puts "#{card} #{err}"
-        elsif filter == :all
-            (0...numsets).each{|i|
-                card,err = dataset[i][index]
-                puts "#{card} #{err}"
-            }
-        else
-            raise "Unknown filter #{filter}"
-        end
-    }
+def filter_samples(numsets, max, step, filter)
+  r = Redis.new
+  dataset = {}
+  (0...numsets).each do |i|
+    dataset[i] = run_experiment(r, i, max, step)
+    warn "Set #{i}"
+  end
+  dataset[0].each_with_index do |ele, index|
+    case filter
+    when :max
+      card = ele[0]
+      err = ele[1].abs
+      (1...numsets).each do |i|
+        err = dataset[i][index][1] if err < dataset[i][index][1]
+      end
+      puts "#{card} #{err}"
+    when :avg
+      card = ele[0]
+      err = 0
+      (0...numsets).each do |i|
+        err += dataset[i][index][1]
+      end
+      err /= numsets
+      puts "#{card} #{err}"
+    when :absavg
+      card = ele[0]
+      err = 0
+      (0...numsets).each do |i|
+        err += dataset[i][index][1].abs
+      end
+      err /= numsets
+      puts "#{card} #{err}"
+    when :all
+      (0...numsets).each do |i|
+        card, err = dataset[i][index]
+        puts "#{card} #{err}"
+      end
+    else
+      raise "Unknown filter #{filter}"
+    end
+  end
 end
 
 if ARGV.length != 4
-    puts "Usage: hll-gnuplot-graph <samples> <max> <step> (max|avg|absavg|all)"
-    exit 1
+  puts 'Usage: hll-gnuplot-graph <samples> <max> <step> (max|avg|absavg|all)'
+  exit 1
 end
-filter_samples(ARGV[0].to_i,ARGV[1].to_i,ARGV[2].to_i,ARGV[3].to_sym)
+filter_samples(ARGV[0].to_i, ARGV[1].to_i, ARGV[2].to_i, ARGV[3].to_sym)

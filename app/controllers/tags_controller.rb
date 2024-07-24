@@ -1,15 +1,21 @@
-class TagsController < ApplicationController
+# frozen_string_literal: true
 
+class TagsController < ApplicationController
   def index
     @user = current_user
     @tags = Tag.all.ordered_alphabetically
+  end
+
+  def show
+    @user = current_user
+    @tag = Tag.friendly.find(params[:id])
   end
 
   def new
     @tag = Tag.new
   end
 
-  def show
+  def edit
     @user = current_user
     @tag = Tag.friendly.find(params[:id])
   end
@@ -22,11 +28,6 @@ class TagsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def edit
-    @user = current_user
-    @tag = Tag.friendly.find(params[:id])
   end
 
   def update

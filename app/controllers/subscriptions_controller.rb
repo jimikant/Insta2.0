@@ -1,5 +1,6 @@
-class SubscriptionsController < ApplicationController
+# frozen_string_literal: true
 
+class SubscriptionsController < ApplicationController
   def index
     @products = Product.includes(image_attachment: :blob).all
   end
@@ -11,27 +12,27 @@ class SubscriptionsController < ApplicationController
       customer_id = current_user.stripe_customer_id
 
       @session = Stripe::Checkout::Session.create({
-        customer: customer_id,
-        line_items: [{
-          price: @product.stripe_price_id,
-          quantity: 1,
-        }],
-        mode: 'subscription',
-        success_url: root_url,
-        cancel_url: root_url,
-      })
+                                                    customer: customer_id,
+                                                    line_items: [{
+                                                      price: @product.stripe_price_id,
+                                                      quantity: 1
+                                                    }],
+                                                    mode: 'subscription',
+                                                    success_url: root_url,
+                                                    cancel_url: root_url
+                                                  })
 
       # Respond with JavaScript to redirect
       respond_to do |format|
-       format.html { redirect_to @session.url, allow_other_host: true }
-       format.js   { render js: "window.location.href='#{@session.url}'" }
+        format.html { redirect_to @session.url, allow_other_host: true }
+        format.js { render js: "window.location.href='#{@session.url}'" }
       end
     else
       redirect_to subscriptions_path, alert: 'Product not found'
     end
-    rescue Stripe::InvalidRequestError => e
-      flash[:alert] = e.message
-      redirect_to subscriptions_path
+  rescue Stripe::InvalidRequestError => e
+    flash[:alert] = e.message
+    redirect_to subscriptions_path
   end
 
   def destroy
@@ -40,7 +41,6 @@ class SubscriptionsController < ApplicationController
     # p 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
     #   puts "subs :-  #{@subscription.inspect}"
     # p 22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
-
 
     if @subscription
       Stripe::Subscription.delete(@subscription.stripe_subscription_id)

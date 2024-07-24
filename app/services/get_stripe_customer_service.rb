@@ -1,5 +1,6 @@
-class GetStripeCustomerService
+# frozen_string_literal: true
 
+class GetStripeCustomerService
   def initialize(stripe_customer_id)
     @stripe_customer_id = stripe_customer_id
   end

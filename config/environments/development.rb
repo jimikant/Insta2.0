@@ -1,4 +1,6 @@
-require "active_support/core_ext/integer/time"
+# frozen_string_literal: true
+
+require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   # Configure 'rails notes' to inspect Cucumber files
@@ -23,13 +25,13 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join("tmp/caching-dev.txt").exist?
+  if Rails.root.join('tmp/caching-dev.txt').exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      "Cache-Control" => "public, max-age=#{2.days.to_i}"
+      'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -86,21 +88,20 @@ Rails.application.configure do
   # for simple_mail_transfer_protocol
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-  address:              'smtp.gmail.com',
-  port:                 587,
-  domain:               'gmail.com',
-  user_name:            'jimyvaghela010203@gmail.com',
-  password:             'htoh kczy asuh dojk',
-  authentication:       'plain',
-  enable_starttls_auto: true
+    address: 'smtp.gmail.com',
+    port: 587,
+    domain: 'gmail.com',
+    user_name: 'jimyvaghela010203@gmail.com',
+    password: 'htoh kczy asuh dojk',
+    authentication: 'plain',
+    enable_starttls_auto: true
   }
 
   # for redis
   config.cache_store = :redis_cache_store, {
-    url: "redis://:mysecret@localhost:6379/0",
-    namespace: "cache",
-    expires_in: 1.hour,  # Example of setting an expiration time for cached entries
+    url: 'redis://:mysecret@localhost:6379/0',
+    namespace: 'cache',
+    expires_in: 1.hour, # Example of setting an expiration time for cached entries
     support_cache_versioning: true
   }
-
 end

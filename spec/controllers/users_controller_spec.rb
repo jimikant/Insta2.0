@@ -1,14 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
-
   before do
     # Mocking the create_stripe_customer_method_without_relying_on_the_actual_implementation
     allow_any_instance_of(User).to receive(:create_stripe_customer).and_return(true)
   end
 
   context 'when user is authenticated' do
-
     describe 'authorization' do
       let(:user) { create(:user) }
 
@@ -21,25 +21,6 @@ RSpec.describe UsersController, type: :controller do
       it 'authorizes user before accessing user_index' do
         expect(controller).to have_received(:authorize_user).with(no_args)
       end
-    end
-
-    describe "GET #user_index" do
-      let(:user) { create(:user) }
-
-      before do
-        sign_in user
-      end
-
-      # it 'assigns @users' do
-      #   get :user_index
-      #   puts "Assigned users: #{assigns(:users).inspect}"  # Debug output
-      #   expect(assigns(:users)).to eq(User.all.user_asc_order)
-      # end
-
-      # it 'renders the user_index template' do
-      #   get :user_index
-      #   expect(response).to render_template(:user_index)
-      # end
     end
 
     describe 'GET #dashboard' do
@@ -221,13 +202,12 @@ RSpec.describe UsersController, type: :controller do
     #     expect(assigns(:subscription)).to be_present
     #   end
     # end
-
   end
+
   context 'when user is not authenticated' do
-      it 'redirects to the login page' do
-        get :user_index
-        expect(response).to redirect_to(new_user_session_path)
-      end
+    it 'redirects to the login page' do
+      get :user_index
+      expect(response).to redirect_to(new_user_session_path)
+    end
   end
-
 end

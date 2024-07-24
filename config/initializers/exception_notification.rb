@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require "exception_notification/rails"
+require 'exception_notification/rails'
 require 'slack-notifier'
 
 ExceptionNotification.configure do |config|
-
   # Notifiers =================================================================
 
   # Email notifier sends notifications by email.
@@ -16,8 +15,8 @@ ExceptionNotification.configure do |config|
 
   # Slack notifier sends notifications by slack.
   config.add_notifier :slack, {
-    webhook_url: "https://hooks.slack.com/services/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",
-    channel: "#insta",
+    webhook_url: 'https://hooks.slack.com/services/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',
+    channel: '#insta',
     additional_parameters: {
       mrkdwn: true
     }

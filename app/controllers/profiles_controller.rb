@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProfilesController < ApplicationController
   before_action :authorize_user
 
@@ -11,6 +13,11 @@ class ProfilesController < ApplicationController
     @profile = Profile.new
   end
 
+  def edit
+    @user = current_user
+    @profile = @user.profile
+  end
+
   def create
     @user = current_user
     @profile = Profile.new(profile_params)
@@ -20,11 +27,6 @@ class ProfilesController < ApplicationController
     else
       render :new
     end
-  end
-
-  def edit
-    @user = current_user
-    @profile = @user.profile
   end
 
   def update

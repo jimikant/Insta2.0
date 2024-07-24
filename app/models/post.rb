@@ -1,5 +1,6 @@
-class Post < ApplicationRecord
+# frozen_string_literal: true
 
+class Post < ApplicationRecord
   belongs_to :user
   has_and_belongs_to_many :tags, dependent: :destroy
   has_many :likes, dependent: :destroy
@@ -13,7 +14,7 @@ class Post < ApplicationRecord
 
   default_scope -> { order(created_at: :desc) }
 
-  #Foe Friendly_id
+  # Foe Friendly_id
   extend FriendlyId
   friendly_id :title, use: :slugged
 
