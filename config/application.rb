@@ -28,7 +28,7 @@ module AssociationDemo
     # config.eager_load_paths << Rails.root.join("extras")
 
     # For Ngrok_Webhook
-    config.hosts << 'a3a8-117-97-166-6.ngrok-free.app'
+    config.hosts << 'a1bb-2401-4900-8899-e94c-bff8-9241-6e1f-bda3.ngrok-free.app'
 
     # For Cucumber_BDD
     config.hosts << 'www.example.com'
