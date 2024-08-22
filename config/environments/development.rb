@@ -91,8 +91,8 @@ Rails.application.configure do
     address: 'smtp.gmail.com',
     port: 587,
     domain: 'gmail.com',
-    user_name: 'jimyvaghela010203@gmail.com',
-    password: 'htoh kczy asuh dojk',
+    user_name: Rails.application.credentials.dig(:smtp, :user_name),
+    password: Rails.application.credentials.dig(:smtp, :password),
     authentication: 'plain',
     enable_starttls_auto: true
   }
@@ -104,4 +104,7 @@ Rails.application.configure do
     expires_in: 1.hour, # Example of setting an expiration time for cached entries
     support_cache_versioning: true
   }
+
+  # For Ngrok_Webhook
+  config.hosts = nil
 end

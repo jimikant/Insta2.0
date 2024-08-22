@@ -4,13 +4,6 @@ source 'https://rubygems.org'
 
 ruby '3.0.0'
 
-# For Rubocop and its extensions
-gem 'rubocop', require: false
-gem 'rubocop-capybara', require: false
-gem 'rubocop-factory_bot', require: false
-gem 'rubocop-rails', require: false
-gem 'rubocop-rspec', require: false
-
 # For Bullet_Prevent_(N+1)_Query
 group :development do
   gem 'bullet'

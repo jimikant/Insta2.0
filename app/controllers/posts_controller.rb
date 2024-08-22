@@ -65,6 +65,6 @@ class PostsController < ApplicationController
   def authorize_user
     authorize! action_name.to_sym, @post || Post
   rescue CanCan::AccessDenied => e
-    redirect_to dashboard_path, alert: "#{e.message} --- You have reached the limit of posts for your subscription."
+    redirect_to dashboard_path, alert: "#{e.message} --- For upload the posts Subscribe the appropriate Subscription Plan."
   end
 end

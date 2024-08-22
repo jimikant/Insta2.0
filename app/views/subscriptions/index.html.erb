@@ -1,5 +1,9 @@
-<h1>Subscription Plans</h1>
 <br/>
+<h4>Subscription Plans</h4>
+<br/>
+  <% if @products.blank? %>
+    <p>CREATE A PRODUCT FIRST</p>
+  <% end %>
 
 <div class="container">
   <div class="row">

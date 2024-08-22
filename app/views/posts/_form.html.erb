@@ -36,10 +36,16 @@
     </div>
   </div>
 <br/>
-  <div class="form-group">
-    <%= form.label :tags %>
-    <%= form.collection_select :tag_ids, Tag.all.ordered_alphabetically, :id, :name, {}, { multiple: true, class: 'form-control' } %>
-  </div>
+  <% if Tag.any? %>
+    <div class="form-group">
+      <%= form.label :tags %>
+      <%= form.collection_select :tag_ids, Tag.all.ordered_alphabetically, :id, :name, {}, { multiple: true, class: 'form-control' } %>
+    </div>
+  <% else %>
+    <div class="form-group">
+      <%= link_to "Add Tags", tags_path %>
+    </div>
+  <% end %>
 <br/>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">

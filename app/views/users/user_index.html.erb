@@ -30,6 +30,11 @@
   </thead>
 
   <tbody>
+    <% if @users.blank? %>
+      <tr>
+        <td colspan="3" class="tbody text-center"><p>NOTHING TO SHOW HERE</p></td>
+      </tr>
+    <% end %>
     <% @users.each do |user| %>
       <tr>
         <td><%= user.role %></td>
