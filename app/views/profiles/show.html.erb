@@ -17,102 +17,102 @@
 </div>
 
 <br/>
-<h4>My Profile</h4>
+<div class="container-fluid">
+  <div class="row">
+    
+    <!-- My Profile Section -->
+    <div class="col-md-4 d-flex flex-column justify-content-start">
+      <br />
+      <h4>My Profile</h4>
+      <% if @profile.present? %>
+        <% if @profile.avtar.attached? %>
+          <%= image_tag @profile.avtar_variant, class: 'avtar' %>
+        <% else %>
+          <%= image_tag 'default_avtar.png', class: 'avtar' %>
+        <% end %>
+        <br/>
+        <p><strong>First name:</strong> <%= @profile.first_name %></p>
+        <p><strong>Last name:</strong> <%= @profile.last_name %></p>
+        <p><strong>Phone:</strong> <%= @profile.phone %></p>
+        <p><strong>Address:</strong> <%= @profile.address %></p>
+        <%= link_to 'Edit Profile', edit_profile_path, class: "btn btn-warning mb-2" %>
+        <% if current_user.admin? %>
+          <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary mb-2" %>
+        <% else %>
+          <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary mb-2" %>
+        <% end %>
+        <%= button_to 'Delete', destroy_profile_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure delete Profile?' }, class: "btn btn-danger w-100" %>
+      <% else %>
+        <br/>
+        <%= link_to "New Profile", new_profile_path, class: "btn btn-primary custom-post-button mb-2" %>
+        <% if current_user.admin? %>
+          <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary mb-2" %>
+        <% else %>
+          <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary" %>
+        <% end %>
+      <% end %>
+    </div>
 
-<% if @profile.present? %>
-  <% if @profile.avtar.attached? %>
-    <%= image_tag @profile.avtar_variant, class: 'avtar' %>
-  <% else %>
-    <%= image_tag 'default_avtar.png', class: 'avtar' %>
-  <% end %>
-  
-  <br/>
-  <br/>
-
-  <p><strong>First name:</strong> <%= @profile.first_name %></p>
-  <p><strong>Last name:</strong> <%= @profile.last_name %></p>
-  <p><strong>Phone:</strong> <%= @profile.phone %></p>
-  <p><strong>Address:</strong> <%= @profile.address %></p>
-  <%= link_to 'Edit Profile', edit_profile_path, class: "btn btn-warning" %> |
-  <% if current_user.admin? %>
-    <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
-  <% else %>
-    <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary" %>
-  <% end %>
-  <br/><br/>
-  <%= button_to 'Delete', destroy_profile_path, method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure delete Profile?'}, class: "btn btn-danger" %>
-<% else %>
-  <br/>
-  <%= link_to "New Profile", new_profile_path, class: "btn btn-primary custom-post-button" %> | 
-  <% if current_user.admin? %>
-    <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
-  <% else %>
-    <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary" %>
-  <% end %>
-  <br/>
-<% end %>
-
-<br/>
-<hr class="my-4 border-dark" style="border-top: 2px dashed;" />
-
-
-<h4>My Posts</h4>
-<br/>
-<%= link_to "New Post", new_post_path, class: "btn btn-primary custom-post-button" %>
-
-<div class="container">
-  <div class= "row justify-content-center" >
-    <div class="col-md-6">
-      <% @user.posts.each do |post| %>
-        <div class="card mt-3">
-          <div class="card-body text-center">
-
-            <a href="<%= post_path(post) %>" class= "text-dark text-decoration-none">
-              <% if post.image.attached? %>
-                <%= image_tag url_for(post.image), class: "img-thumbnail custom-img-size mb-3" %>
-              <% end %>
-            </a>
-            
-            <p class="card-title"><strong>Title:</strong> <%= post.title %></p>
-            <% if post.tags.any? %>
-              <p class="card-title "><strong>Tags:</strong>
-              <% post.tags.each do |tag| %>
-              <span class= "tag text-white bg-dark rounded p-1"><%= tag.name %></span>
-              <% end %>
-              </p>
-            <% else %>
-              <p class="card-title"><strong>No Tags available</strong></p>
+    <!-- My Posts Section -->
+    <div class="col-md-8 d-flex flex-column" style="height: 80vh; overflow-y: auto;">
+      <br />
+      <div class="d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">My Posts</h4>
+        <%= link_to "New Post", new_post_path, class: "btn btn-primary" %>
+      </div>
+      
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-12">
+            <% @posts.each do |post| %>
+              <div class="card mt-3">
+                <div class="card-body text-center">
+                  <a href="<%= post_path(post) %>" class="text-dark text-decoration-none">
+                    <% if post.image.attached? %>
+                      <%= image_tag url_for(post.image), class: "img-thumbnail custom-img-size mb-3" %>
+                    <% end %>
+                  </a>
+                  <p class="card-title"><strong>Title:</strong> <%= post.title %></p>
+                  <% if post.tags.any? %>
+                    <p class="card-title"><strong>Tags:</strong>
+                    <% post.tags.each do |tag| %>
+                      <span class="tag text-white bg-dark rounded p-1"><%= tag.name %></span>
+                    <% end %>
+                    </p>
+                  <% else %>
+                    <p class="card-title"><strong>No Tags available</strong></p>
+                  <% end %>
+                  <!-- toggle button for liking/disliking -->
+                  <div class="post-container-toggel d-flex justify-content-center align-items-center">
+                    <div class="count-toggle">
+                      <span class="likes-count">
+                        <%= post.likes.count %>
+                      </span>
+                    </div>
+                    <div class="toggle">
+                      <% if post.likes.where(user: @user).exists? %>
+                        <%= form_with(url: destroy_like_path(user_id: @user.id, id: post.likes.find_by(user: @user).id), method: :delete) do |form| %>
+                          <%= form.radio_button :like, true, id: "like1", class: "d-none" %>
+                          <%= form.label :like, class: "like-btn btn btn-outline-danger", id: "liked", for: "like1" do %>
+                            <span class="like-text" id="like-text1">Liked</span>
+                          <% end %>
+                        <% end %>
+                      <% else %>
+                        <%= form_with(url: likes_path(user_id: @user.id, post_id: post.id), method: :post) do |form| %>
+                          <%= form.radio_button :like, true, id: "like2", class: "d-none" %>
+                          <%= form.label :like, class: "like-btn btn btn-outline-danger", id: "like", for: "like2" do %>
+                            <span class="like-text" id="like-text2">Like</span>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <% end %>
-
-            <!-- toggle button for liking/disliking -->
-            <div class= "post-container-toggel d-flex justify-content-center align-items-center">
-              <div class= "count-toggle">
-                <span class="likes-count">
-                  <%= post.likes.count %>
-                </span>
-              </div>
-              <div class="toggle">
-                <% if post.likes.where(user: @user).exists? %>
-                  <%= form_with(url: destroy_like_path(user_id: @user.id, id: post.likes.find_by(user: @user).id), method: :delete) do |form| %>
-                    <%= form.radio_button :like, true, id: "like1", class: "d-none" %>
-                    <%= form.label :like, class: "like-btn btn btn-outline-danger", id: "liked", for: "like1" do %>
-                      <span class = "like-text" id="like-text1">Liked</span>
-                    <% end %>
-                  <% end %>
-                <% else %>
-                  <%= form_with(url: likes_path(user_id: @user.id, post_id: post.id), method: :post) do |form| %>
-                    <%= form.radio_button :like, true, id: "like2", class: "d-none" %>
-                    <%= form.label :like, class: "like-btn btn btn-outline-danger", id: "like", for: "like2" do %>
-                      <span class = "like-text" id="like-text2">Like</span>
-                    <% end %>
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
-            
           </div>
         </div>
-      <% end %>
+      </div>
     </div>
   </div>
 </div>

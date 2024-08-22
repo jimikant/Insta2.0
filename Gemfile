@@ -4,11 +4,6 @@ source 'https://rubygems.org'
 
 ruby '3.0.0'
 
-# For Bullet_Prevent_(N+1)_Query
-group :development do
-  gem 'bullet'
-end
-
 # For Sending_notification_and_exceptions_to_my_slack_account
 gem 'exception_notification'
 gem 'slack-notifier'

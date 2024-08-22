@@ -6,6 +6,7 @@ class ProfilesController < ApplicationController
   def show
     @user = current_user
     @profile = @user.profile
+    @posts = @user.posts.includes(:tags, :likes, image_attachment: :blob)
   end
 
   def new
