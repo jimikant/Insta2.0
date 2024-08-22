@@ -1,29 +1,30 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <div class="app-logo">
-      <% if controller_name == "users" && (action_name == "user_index" || action_name == "dashboard") %>
-        <%# <h1><%= link_to "Associations", root_path, class: "navbar-brand" %>
-        <%= image_tag("app_logo.png", class: "logo") %>
-      <% end %>
-      <% if controller_name == 'users' && action_name == 'show'%>
-        <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
-      <% end %>
-    </div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
-        
-        <div class= "user-profile-btn-group">
-          <% if controller_name == "users" && action_name == "user_index" %>
-            <div class= "btn-newuser" style = "position: relative; right: 10px;">
-              <%= link_to "New User", new_user_path, class: "btn btn-primary " %>
-            </div>
-          <% end %>
-
-          <% if controller_name == "users" && (action_name == "user_index" || action_name == "dashboard") %>
-            <div class= "btn-profile">
+<% unless controller_name == 'subscriptions' %>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <div class="app-logo">
+        <% if controller_name == "users" && (action_name == "user_index" || action_name == "dashboard") %>
+          <%# <h1><%= link_to "Associations", root_path, class: "navbar-brand" %>
+          <%= image_tag("app_logo.png", class: "logo") %>
+        <% end %>
+        <% if controller_name == 'users' && action_name == 'show'%>
+          <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
+        <% end %>
+      </div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          
+          <div class="user-profile-btn-group">
+            <% if controller_name == "users" && action_name == "user_index" %>
+              <div class="btn-newuser" style="position: relative; right: 10px;">
+                <%= link_to "New User", new_user_path, class: "btn btn-primary" %>
+              </div>
+            <% end %>
+  
+            <% if controller_name == "users" && (action_name == "user_index" || action_name == "dashboard") %>
+              <div class="btn-profile">
                 <li class="nav-item">
                   <%= link_to profile_path do %>
                     <% if current_user&.profile&.avtar&.attached? %>
@@ -33,22 +34,22 @@
                     <% end %>
                   <% end %>
                 </li>
-            </div>
-          <% end %>
-
+              </div>
+            <% end %>
   
-          <div class= "menu-signout">
-            <div>
-              <%= yield :Signout %>
+            <div class="menu-signout">
+              <div>
+                <%= yield :Signout %>
+              </div>
+              <div>
+                <%= yield :Settings %>
+              </div>
             </div>
-            <div>
-              <%= yield :Settings %>
-            <div>
+          
           </div>
-        
-        </div>
-
-      </ul>
+  
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+<% end %>
