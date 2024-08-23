@@ -3,8 +3,7 @@
   <div class="row">
     
     <!-- My Profile Section -->
-    <div class="col-md-4 d-flex flex-column justify-content-start">
-      <br />
+    <div class="col-md-4 d-flex flex-column justify-content-start align-items-center bg-white p-3 border" style="height: 70vh; margin-top: 55px;">
       <% if @profile.present? %>
         <h4>My Profile</h4>
         <% if @profile.avtar.attached? %>
@@ -17,12 +16,8 @@
         <p><strong>Last name:</strong> <%= @profile.last_name %></p>
         <p><strong>Phone:</strong> <%= @profile.phone %></p>
         <p><strong>Address:</strong> <%= @profile.address %></p>
+        <br />
         <%= link_to 'Edit Profile', edit_profile_path, class: "btn btn-warning mb-2" %>
-        <% if current_user.admin? %>
-          <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary mb-2" %>
-        <% else %>
-          <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary mb-2" %>
-        <% end %>
         <%= button_to 'Delete', destroy_profile_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure delete Profile?' }, class: "btn btn-danger w-100" %>
       <% else %>
         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -34,13 +29,12 @@
 
     <!-- My Posts Section -->
     <div class="col-md-8 d-flex flex-column" style="height: 90vh; overflow-y: auto;">
-      <br />
-      <div class="d-flex justify-content-between align-items-center">
-        <h4 class="mb-0">My Posts</h4>
-        <%= link_to "New Post", new_post_path, class: "btn btn-primary" %>
-      </div>
-      
       <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">My Posts</h4>
+          <%= link_to "New Post", new_post_path, class: "btn btn-primary" %>
+        </div>
+      
         <div class="row justify-content-center">
           <div class="col-md-12">
             <% @posts.each do |post| %>

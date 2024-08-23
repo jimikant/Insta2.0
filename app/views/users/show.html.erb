@@ -3,8 +3,7 @@
   <div class="row">
     
     <!-- My Profile Section -->
-    <div class="col-md-4 d-flex flex-column justify-content-start">
-      <br />
+    <div class="col-md-4 d-flex flex-column justify-content-start align-items-center bg-white p-3 border" style="height: 70vh; margin-top: 55px;">
       <h4>My Profile</h4>
       <% if @user.profile.present? %>
         <% if @user.profile.avtar.attached? %>
@@ -24,10 +23,9 @@
 
     <!-- My Posts Section -->
     <div class="col-md-8 d-flex flex-column" style="height: 90vh; overflow-y: auto;">
-      <br />
-      <h4>My Posts</h4>
-      <% if @posts.present? %>
-        <div class="container">
+      <div class="container">
+        <h4>My Posts</h4>
+        <% if @posts.present? %>
           <div class="row justify-content-center">
             <div class="col-md-12">
               <% @posts.each do |post| %>
@@ -78,10 +76,10 @@
               <% end %>
             </div>
           </div>
-        </div>
-      <% else %>
-        <p class="text">POST IS NOT PRESENT</p>
-      <% end %>
+        <% else %>
+          <p class="text">POST IS NOT PRESENT</p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

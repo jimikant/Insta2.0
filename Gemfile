@@ -24,7 +24,7 @@ group :development, :test do
 end
 
 # For stripe_payment
-gem 'stripe', '~> 5.0'
+gem 'stripe'
 gem 'stripe_event'
 
 # For redis
