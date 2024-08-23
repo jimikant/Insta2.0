@@ -12,7 +12,7 @@ class Subscription < ApplicationRecord
     return if stripe_subscription_id.blank?
 
     begin
-      Stripe::Subscription.delete(stripe_subscription_id)
+      Stripe::Subscription.cancel(stripe_subscription_id)
     rescue Stripe::InvalidRequestError => e
       Rails.logger.error "Stripe subscription cancellation failed: #{e.message}"
     end

@@ -1,91 +1,109 @@
-<br/>
-<h2>Post</h2>
-<br/>
-
-<div class="card-body">
-
-  <div class= "username mb-1">
-    <% if @post&.user&.profile&.avtar&.attached? %>
-      <div class="avtar-preview">
-        <%= image_tag @post.user.profile.avtar_variant, class: 'postavtar' %>
-        <% if @post.user.profile.present? %>
-          <span><strong><%= @post.user.profile.first_name %></strong></span>
-        <% else %>
-          <span><strong><%= @post.user.username %></strong></span>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="avtar-preview">
-        <%= image_tag 'default_avtar.png', class: 'postavtar' %>
-        <% if @post.user.profile.present? %>
-          <span><strong><%= @post.user.profile.first_name %></strong></span>
-        <% else %>
-          <span><strong><%= @post.user.username %></strong></span>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-
-  <% if @post.image.attached? %>
-    <%= image_tag url_for(@post.image), class: "img-thumbnail custom-img-size mb-2" %>
-  <% end %>
-  <p><strong>Post ID:</strong> <%= @post.id %></p>
-  <p><strong>Title:</strong> <%= @post.title %></p>
-  <p><strong>Description:</strong> <%= @post.description %></p>
-  <% if @post.tags.any? %>
-    <p class="card-title "><strong>Tags:</strong>
-    <% @post.tags.each do |tag| %>
-    <span class= "tag text-white bg-dark rounded p-1"><%= tag.name %></span>
-    <% end %>
-    </p>
-  <% else %>
-    <p class="card-title"><strong>No Tags available</strong></p>
-  <% end %>
-<br/>
-
-  <!-- toggle button for liking/disliking -->
-  <div class= "post-container-toggle d-flex align-items-center">
-    <div class= "count-toggle">
-      <span class="likes-count">
-        <%= @post.likes.count %>
-      </span>
-    </div>
-    <div class="toggle">
-      <% if @post.likes.where(user: @user).exists? %>
-        <%= form_with(url: destroy_like_path(user_id: @user.id, id: @post.likes.find_by(user: @user).id), method: :delete) do |form| %>
-          <%= form.radio_button :like, true, id: "like1", class: "d-none" %>
-          <%= form.label :like, class: "like-btn btn btn-outline-danger", id: "liked", for: "like1" do %>
-            <span class = "like-text" id="like-text1">Liked</span>
+<!-- Post Section -->
+<div class="container mt-4">
+  <div class="card shadow-sm p-4 mb-4 rounded" style="max-width: 700px; margin: auto;">
+    <h4 class="text-center mb-4">Post Details</h4><hr>
+    <div class="card-body">
+      <!-- Upper Section: Post Image and User Avatar -->
+      <div class="mb-3">
+        <!-- User Avatar -->
+        <div class="d-flex align-items-center mb-3">
+          <% if @post&.user&.profile&.avtar&.attached? %>
+            <div class="me-3">
+              <%= image_tag @post.user.profile.avtar_variant, class: 'postavtar rounded-circle', style: 'width: 50px; height: 50px;' %>
+            </div>
+            <div>
+              <h6 class="mb-0">
+                <% if @post.user.profile.present? %>
+                  <%= @post.user.profile.first_name %>
+                <% else %>
+                  <%= @post.user.username %>
+                <% end %>
+              </h6>
+            </div>
+          <% else %>
+            <div class="me-3">
+              <%= image_tag 'default_avtar.png', class: 'postavtar rounded-circle', style: 'width: 50px; height: 50px;' %>
+            </div>
+            <div>
+              <h6 class="mb-0">
+                <% if @post.user.profile.present? %>
+                  <%= @post.user.profile.first_name %>
+                <% else %>
+                  <%= @post.user.username %>
+                <% end %>
+              </h6>
+            </div>
           <% end %>
-        <% end %>
-      <% else %>
-        <%= form_with(url: likes_path(user_id: @user.id, post_id: @post.id), method: :post) do |form| %>
-          <%= form.radio_button :like, true, id: "like2", class: "d-none" %>
-          <%= form.label :like, class: "like-btn btn btn-outline-danger", id: "like", for: "like2" do %>
-            <span class = "like-text" id="like-text2">Like</span>
-          <% end %>
-        <% end %>
+        </div>
+      </div>
+      <!-- Post Image -->
+      <% if @post.image.attached? %>
+        <%= image_tag url_for(@post.image), class: "img-fluid rounded mb-3", style: "max-height: 300px; object-fit: cover;" %>
       <% end %>
+
+      <!-- Lower Section: Content and Actions -->
+      <div class="row w-75 mx-auto">
+        <!-- Left Side: Attributes -->
+        <div class="col-md-8">
+          <!-- Post Attributes -->
+          <p class="mb-2"><strong>Post ID:</strong> <%= @post.id %></p>
+          <p class="mb-2"><strong>Title:</strong> <%= @post.title %></p>
+          <p class="mb-3"><strong>Description:</strong> <%= @post.description %></p>
+
+          <% if @post.tags.any? %>
+            <div class="mb-3">
+              <strong>Tags:</strong>
+              <% @post.tags.each do |tag| %>
+                <span class="badge bg-dark text-white me-1" style="font-size: 0.75rem;"><%= tag.name %></span>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted mb-3"><strong>No Tags available</strong></p>
+          <% end %>
+
+          <!-- Toggle button for liking/disliking -->
+          <div class="d-flex align-items-center mb-3">
+            <div class="me-3">
+              <span class="likes-count fs-5 text-muted">
+                <%= @post.likes.count %>
+              </span>
+            </div>
+            <div>
+              <% if @post.likes.where(user: @user).exists? %>
+                <%= form_with(url: destroy_like_path(user_id: @user.id, id: @post.likes.find_by(user: @user).id), method: :delete, local: true) do |form| %>
+                  <%= form.radio_button :like, true, id: "like1", class: "d-none" %>
+                  <%= form.label :like, class: "btn btn-outline-danger btn-sm", id: "liked", for: "like1" do %>
+                    <span class="like-text">Liked</span>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <%= form_with(url: likes_path(user_id: @user.id, post_id: @post.id), method: :post, local: true) do |form| %>
+                  <%= form.radio_button :like, true, id: "like2", class: "d-none" %>
+                  <%= form.label :like, class: "btn btn-outline-danger btn-sm", id: "like", for: "like2" do %>
+                    <span class="like-text">Like</span>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Actions -->
+        <div class="col-md-4">
+          <div class="d-flex flex-column">
+            <% if can? :edit, @post %>
+              <%= link_to 'Edit', edit_post_path, class: "btn btn-warning btn-sm mb-2" %>
+              <%= button_to 'Destroy', destroy_post_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete this post?' }, class: "btn btn-danger btn-sm mb-2 w-100" %>
+            <% end %>
+            <%= link_to 'Back to My Posts', profile_path, class: "btn btn-secondary btn-sm mb-2" %>
+            <% if current_user.admin? %>
+              <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary btn-sm mb-2" %>
+            <% else %>
+              <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary btn-sm mb-2" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-<br/>
-
-<% if can? :edit, @post %>
-  <%= link_to 'Edit', edit_post_path, class: "btn btn-warning" %> |
-  <%= link_to 'Back to My Posts', profile_path, class: "btn btn-secondary" %> | 
-  <% if current_user.admin? %>
-    <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
-  <% else %>
-    <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary" %>
-  <% end %>
-  <br/><br/>
-  <%= button_to 'Destroy', destroy_post_path, method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure delete Post?' }, class: "btn btn-danger" %>
-<% else %>
-  <% if current_user.admin? %>
-    <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
-  <% else %>
-    <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary" %>
-  <% end %>
-<% end %>
 </div>

@@ -1,55 +1,56 @@
-<%= form_with model: @post, url: @post.new_record? ? posts_path : update_post_path, class: "form-horizontal", local: true  do |form| %>
-
-  <div class= "form-group">
-    <%= form.label :image, class: "col-sm-2 control-label" %>
+<%= form_with model: @post, url: @post.new_record? ? posts_path : update_post_path, class: "container mt-4", local: true do |form| %>
+  <div class="mb-3 row">
+    <%= form.label :image, class: "col-sm-2 col-form-label bold-label" %>
     <div class="col-sm-10">
       <%= form.file_field :image, class: "form-control" %>
-      <% if @user.errors[:image].any? %>
-      <div class="error_messages">
-        <%= @user.errors[:image].join(", ") %>
-      </div>
+      <% if @post.errors[:image].any? %>
+        <div class="text-danger mt-2">
+          <%= @post.errors[:image].join(", ") %>
+        </div>
       <% end %>
     </div>
   </div>
-<br/>
-  <div class="form-group">
-    <%= form.label :title, class: "col-sm-2 control-label" %>
+
+  <div class="mb-3 row">
+    <%= form.label :title, class: "col-sm-2 col-form-label bold-label" %>
     <div class="col-sm-10">
       <%= form.text_field :title, class: "form-control" %>
       <% if @post.errors[:title].any? %>
-      <div class="error_messages">
-        <%= @post.errors[:title].join(", ") %>
-      </div>
+        <div class="text-danger mt-2">
+          <%= @post.errors[:title].join(", ") %>
+        </div>
       <% end %>
     </div>
   </div>
-<br/>
-  <div class="form-group">
-    <%= form.label :description, class: "col-sm-2 control-label" %>
+
+  <div class="mb-3 row">
+    <%= form.label :description, class: "col-sm-2 col-form-label bold-label" %>
     <div class="col-sm-10">
-      <%= form.text_field :description, class: "form-control" %>
+      <%= form.text_area :description, class: "form-control", rows: 3 %>
       <% if @post.errors[:description].any? %>
-      <div class="error_messages">
-        <%= @post.errors[:description].join(", ") %>
-      </div>
+        <div class="text-danger mt-2">
+          <%= @post.errors[:description].join(", ") %>
+        </div>
       <% end %>
     </div>
   </div>
-<br/>
+
   <% if Tag.any? %>
-    <div class="form-group">
-      <%= form.label :tags %>
-      <%= form.collection_select :tag_ids, Tag.all.ordered_alphabetically, :id, :name, {}, { multiple: true, class: 'form-control' } %>
+    <div class="mb-3 row">
+      <%= form.label :tags, class: "col-sm-2 col-form-label bold-label" %>
+      <div class="col-sm-10">
+        <%= form.collection_select :tag_ids, Tag.all.ordered_alphabetically, :id, :name, {}, { multiple: true, class: 'form-control' } %>
+      </div>
     </div>
   <% else %>
-    <div class="form-group">
-      <%= link_to "Add Tags", tags_path %>
+    <div class="mb-3">
+      <%= link_to "Add Tags", tags_path, class: "btn btn-link" %>
     </div>
   <% end %>
-<br/>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <%= form.submit class: "btn btn-primary" %>
+
+  <div class="mb-3 row">
+    <div class="col-sm-10 offset-sm-2">
+      <%= form.submit class: "btn btn-primary w-25" %>
     </div>
   </div>
 <% end %>

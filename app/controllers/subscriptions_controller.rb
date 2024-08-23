@@ -18,8 +18,8 @@ class SubscriptionsController < ApplicationController
                                                       quantity: 1
                                                     }],
                                                     mode: 'subscription',
-                                                    success_url: root_url,
-                                                    cancel_url: root_url
+                                                    success_url: dashboard_url,
+                                                    cancel_url: dashboard_url
                                                   })
 
       # Respond with JavaScript to redirect
@@ -43,7 +43,7 @@ class SubscriptionsController < ApplicationController
     # p 22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
 
     if @subscription
-      Stripe::Subscription.delete(@subscription.stripe_subscription_id)
+      Stripe::Subscription.cancel(@subscription.stripe_subscription_id)
 
       @subscription.update!(status: 'canceled', active: false)
       flash[:notice] = 'Subscription has been canceled.'
@@ -51,6 +51,6 @@ class SubscriptionsController < ApplicationController
       flash[:alert] = 'Subscription not found.'
     end
 
-    redirect_to subscriptions_path
+    redirect_to dashboard_path
   end
 end

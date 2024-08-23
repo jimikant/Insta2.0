@@ -5,7 +5,7 @@
         <% if controller_name == "users" && (action_name == "user_index" || action_name == "dashboard") %>
           <%= image_tag("app_logo.png", class: "logo") %>
         <% end %>
-        <% if controller_name == 'users' && action_name == 'show' %>
+        <% if controller_name == 'users' && (action_name == 'show' || action_name == 'new'|| action_name == 'edit') %>
           <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
         <% end %>
         <% if controller_name == 'profiles' && action_name == 'show' %>
@@ -14,6 +14,16 @@
           <% else %>
             <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary" %>
           <% end %>
+        <% end %>
+        <% if controller_name == 'posts' && action_name == 'edit' %>
+          <%= link_to 'Back to My Post', post_path, class: "btn btn-secondary" %>
+        <% end %>
+        <% if controller_name == 'profiles' && action_name == 'edit' %>
+          <%= link_to 'Back to My Profile', profile_path, class: "btn btn-secondary" %>
+        <% end %>
+        <% if controller_name == 'tags' && (action_name == 'show' || action_name == 'edit') %>
+          <%= link_to 'Back to Tags', tags_path, class: "btn btn-secondary" %> | 
+          <%= link_to 'Back to Setings', user_settings_path, class: "btn btn-secondary" %>
         <% end %>
       </div>
 
@@ -34,7 +44,7 @@
                 </li>
 
                 <!-- Profile Dropdown Menu -->
-                <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="profileDropdown">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                   <li>
                     <%= link_to 'My Profile', profile_path, class: 'dropdown-item' %>
                   </li>
@@ -44,7 +54,7 @@
                   </li>
                   <hr class= "mt-0 mb-0">
                   <li>
-                    <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-secondary", method: :delete, data: { turbo_confirm: 'Are you sure you want to Logout?'}, style: "margin-top: 5px; margin-left: 5px;" %>
+                    <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-danger", method: :delete, data: { turbo_confirm: 'Are you sure you want to Logout?'}, style: "margin-top: 5px; margin-left: 5px;" %>
                   </li>
                 </ul>
 

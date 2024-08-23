@@ -1,24 +1,22 @@
 <% if @profile.avtar.attached? %>
-  <div class="avtar-preview">
-    <%= image_tag @profile.avtar_variant, class: 'avtar' %>
+  <div class="avtar-preview mb-3">
+    <%= image_tag @profile.avtar_variant, class: 'avtar img-fluid' %>
   </div>
-  <br/>
-  <%= button_to 'Delete Avtar', delete_avtar_path(@user), method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure delete Avtar?' }, class: 'btn btn-danger' %>
-
+  <%= button_to 'Delete Avtar', delete_avtar_path(@user), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete the Avtar?' }, class: 'btn btn-danger' %>
 <% else %>
-  <div class="avtar-preview">
-    <%= image_tag 'default_avtar.png', class: 'avtar' %>
+  <div class="avtar-preview mb-3">
+    <%= image_tag 'default_avtar.png', class: 'avtar img-fluid' %>
   </div>
 <% end %>
-<br/>
 
-<%= form_with model: @profile, url: @profile.new_record? ? profiles_path : update_profile_path(@user, @profile), class: "form-horizontal"  do |form| %>
+<%= form_with model: @profile, url: @profile.new_record? ? profiles_path : update_profile_path(@user, @profile), class: "container mt-4", local: true do |form| %>
   
-  <div class="form-group">
+  <div class="mb-3 row">
+    <%= form.label :avtar, class: "col-sm-2 col-form-label bold-label" %>
     <div class="col-sm-10">
       <%= form.file_field :avtar, class: "form-control" %>
       <% if @profile.errors[:avtar].any? %>
-        <div class="error_messages">
+        <div class="text-danger mt-2">
           <%= @profile.errors[:avtar].join(", ") %>
         </div>
       <% end %>
@@ -26,59 +24,61 @@
   </div>
   <br/>
   
-  <div class="form-group">
-    <%= form.label :first_name, class: "col-sm-2 control-label" %>
+  <div class="mb-3 row">
+    <%= form.label :first_name, class: "col-sm-2 col-form-label bold-label" %>
     <div class="col-sm-10">
       <%= form.text_field :first_name, class: "form-control" %>
       <% if @profile.errors[:first_name].any? %>
-      <div class="error_messages">
-        <%= @profile.errors[:first_name].join(", ") %>
-      </div>
+        <div class="text-danger mt-2">
+          <%= @profile.errors[:first_name].join(", ") %>
+        </div>
       <% end %>
     </div>
   </div>
-<br/>
-  <div class="form-group">
-    <%= form.label :last_name, class: "col-sm-2 control-label" %>
+  <br/>
+  
+  <div class="mb-3 row">
+    <%= form.label :last_name, class: "col-sm-2 col-form-label bold-label" %>
     <div class="col-sm-10">
       <%= form.text_field :last_name, class: "form-control" %>
       <% if @profile.errors[:last_name].any? %>
-      <div class="error_messages">
-        <%= @profile.errors[:last_name].join(", ") %>
-      </div>
+        <div class="text-danger mt-2">
+          <%= @profile.errors[:last_name].join(", ") %>
+        </div>
       <% end %>
     </div>
   </div>
-<br/>
-  <div class="form-group">
-    <%= form.label :phone, class: "col-sm-2 control-label" %>
+  <br/>
+  
+  <div class="mb-3 row">
+    <%= form.label :phone, class: "col-sm-2 col-form-label bold-label" %>
     <div class="col-sm-10">
       <%= form.text_field :phone, class: "form-control" %>
       <% if @profile.errors[:phone].any? %>
-      <div class="error_messages">
-        <%= @profile.errors[:phone].join(", ") %>
-      </div>
+        <div class="text-danger mt-2">
+          <%= @profile.errors[:phone].join(", ") %>
+        </div>
       <% end %>
     </div>
   </div>
-<br/>
-  <div class="form-group">
-    <%= form.label :address, class: "col-sm-2 control-label" %>
+  <br/>
+  
+  <div class="mb-3 row">
+    <%= form.label :address, class: "col-sm-2 col-form-label bold-label" %>
     <div class="col-sm-10">
       <%= form.text_area :address, class: "form-control" %>
       <% if @profile.errors[:address].any? %>
-      <div class="error_messages">
-        <%= @profile.errors[:address].join(", ") %>
-      </div>
+        <div class="text-danger mt-2">
+          <%= @profile.errors[:address].join(", ") %>
+        </div>
       <% end %>
     </div>
   </div>
-<br/>
+  <br/>
 
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <%= form.submit class: "btn btn-primary" %>
+  <div class="mb-3 row">
+    <div class="col-sm-10 offset-sm-2">
+      <%= form.submit class: "btn btn-primary w-25" %>
     </div>
   </div>
 <% end %>
-

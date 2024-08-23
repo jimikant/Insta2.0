@@ -20,8 +20,10 @@
 </div>
 <br/><br/>
 <% if current_user.admin?%>
+  <%= link_to 'Back to My Post', profile_path, class: "btn btn-secondary" %> | 
   <%= link_to 'Go to All Posts', dashboard_path, class: "btn btn-secondary" %> | 
   <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
 <% else %>
-  <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary" %> | 
+  <%= link_to 'Back to My Post', profile_path, class: "btn btn-secondary" %> | 
+  <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary" %>
 <% end %>
