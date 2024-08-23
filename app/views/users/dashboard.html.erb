@@ -1,21 +1,3 @@
-<div class= "contant-for">
-  <div class= "users-signout">
-    <% content_for :Signout do %>
-      <% if user_signed_in? %>
-        <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-secondary", method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure you want to Logout?'} %>
-      <% else %>
-        <%= link_to 'Sign in', new_user_session_path, class: "btn btn-primary" %>
-      <% end %>
-    <% end %>
-  </div>
-  
-  <div class= "users-settings">
-    <% content_for :Settings do %>
-      <%= link_to "Settings", settings_user_path, class: "btn btn-info justify-content-start" %>
-    <% end %>
-  </div>
-</div>
-
 <br/>
 <% if current_user.profile.present? %>
   <h4>Welcome <%= current_user.profile.first_name %></h4>

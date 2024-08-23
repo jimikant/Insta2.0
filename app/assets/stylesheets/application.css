@@ -9,7 +9,6 @@
   cursor: pointer;
 }
 
-
 /* Error_message */
 .error_messages {
   color: red;
@@ -19,15 +18,8 @@
 .user-profile-btn-group{
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: space-evenly;
-  width: 34vh;
-  align-items: center;
-}
-.menu-signout{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  height: 88px;
 }
 .card-body .custom-img-size {
   aspect-ratio: 1;

@@ -1,21 +1,3 @@
-<div class= "contant-for">
-  <div class= "users-signout">
-    <% content_for :Signout do %>
-      <% if user_signed_in? %>
-        <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-secondary", method: :delete %>
-      <% else %>
-        <%= link_to 'Sign in', new_user_session_path, class: "btn btn-primary" %>
-      <% end %>
-    <% end %>
-  </div>
-  
-  <div class= "users-settings">
-    <% content_for :Settings do %>
-      <%= link_to "Settings", settings_user_path, class: "btn btn-info justify-content-start" %>
-    <% end %>
-  </div>
-</div>
-
 <br/>
 <div class="container-fluid">
   <div class="row">
@@ -41,7 +23,7 @@
     </div>
 
     <!-- My Posts Section -->
-    <div class="col-md-8 d-flex flex-column" style="height: 80vh; overflow-y: auto;">
+    <div class="col-md-8 d-flex flex-column" style="height: 90vh; overflow-y: auto;">
       <br />
       <h4>My Posts</h4>
       <% if @posts.present? %>

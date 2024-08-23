@@ -1,53 +1,57 @@
 <% unless controller_name == 'subscriptions' %>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <div class="app-logo">
+    <div class="container" style="display: flex; flex-wrap: nowrap;">
+      <div class="app-logo justify-content-start">
         <% if controller_name == "users" && (action_name == "user_index" || action_name == "dashboard") %>
-          <%# <h1><%= link_to "Associations", root_path, class: "navbar-brand" %>
           <%= image_tag("app_logo.png", class: "logo") %>
         <% end %>
-        <% if controller_name == 'users' && action_name == 'show'%>
+        <% if controller_name == 'users' && action_name == 'show' %>
           <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
         <% end %>
+        <% if controller_name == 'profiles' && action_name == 'show' %>
+          <% if current_user.admin? %>
+            <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
+          <% else %>
+            <%= link_to 'Back to Posts', dashboard_path, class: "btn btn-secondary" %>
+          <% end %>
+        <% end %>
       </div>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+
+      <!-- Static Navbar Content -->
+      <div class="navbar-collapse justify-content-end">
         <ul class="navbar-nav">
-          
-          <div class="user-profile-btn-group">
-            <% if controller_name == "users" && action_name == "user_index" %>
-              <div class="btn-newuser" style="position: relative; right: 10px;">
-                <%= link_to "New User", new_user_path, class: "btn btn-primary" %>
-              </div>
-            <% end %>
-  
+
+          <!-- User Profile Dropdown -->
+          <div class="user-profile-btn-group justify-content-end">
             <% if controller_name == "users" && (action_name == "user_index" || action_name == "dashboard") %>
-              <div class="btn-profile">
-                <li class="nav-item">
-                  <%= link_to profile_path do %>
-                    <% if current_user&.profile&.avtar&.attached? %>
-                      <%= image_tag current_user.profile.avtar_variant, class: 'avtar' %>
-                    <% else %>
-                      <%= image_tag 'default_avtar.png', class: 'avtar' %>
-                    <% end %>
+              <div class="btn-profile dropdown">
+                <li class="nav-item dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <% if current_user&.profile&.avtar&.attached? %>
+                    <%= image_tag current_user.profile.avtar_variant, class: 'avtar' %>
+                  <% else %>
+                    <%= image_tag 'default_avtar.png', class: 'avtar' %>
                   <% end %>
                 </li>
+
+                <!-- Profile Dropdown Menu -->
+                <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="profileDropdown">
+                  <li>
+                    <%= link_to 'My Profile', profile_path, class: 'dropdown-item' %>
+                  </li>
+                  <hr class= "mt-0 mb-0">
+                  <li>
+                    <%= link_to 'Settings', user_settings_path, class: 'dropdown-item' %>
+                  </li>
+                  <hr class= "mt-0 mb-0">
+                  <li>
+                    <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-secondary", method: :delete, data: { turbo_confirm: 'Are you sure you want to Logout?'}, style: "margin-top: 5px; margin-left: 5px;" %>
+                  </li>
+                </ul>
+
               </div>
             <% end %>
-  
-            <div class="menu-signout">
-              <div>
-                <%= yield :Signout %>
-              </div>
-              <div>
-                <%= yield :Settings %>
-              </div>
-            </div>
-          
           </div>
-  
+
         </ul>
       </div>
     </div>

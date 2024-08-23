@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   get '/users/:id/edit', to: 'users#edit', as: 'edit_user'
   patch '/users/:id', to: 'users#update', as: 'update_user'
   delete '/users/:id', to: 'users#destroy', as: 'destroy_user'
-  get '/dashboard/settings', to: 'users#settings', as: 'settings_user'
+  get '/dashboard/settings', to: 'users#settings', as: 'user_settings'
 
   # For Letter_opener
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?

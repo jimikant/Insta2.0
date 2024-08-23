@@ -1,25 +1,9 @@
-<div class= "contant-for">
-  <div class= "users-signout">
-    <% content_for :Signout do %>
-      <% if user_signed_in? %>
-        <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-secondary", method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure you want to Logout?'} %>
-      <% else %>
-        <%= link_to 'Sign in', new_user_session_path, class: "btn btn-primary" %>
-      <% end %>
-    <% end %>
-  </div>
-  
-  <div class= "users-settings">
-    <% content_for :Settings do %>
-      <%= link_to "Settings", settings_user_path, class: "btn btn-info justify-content-start" %>
-    <% end %>
-  </div>
-</div>
-
 <br/>
-
-<h4>Users List</h4>
-
+<div class="d-flex justify-content-between align-items-center">
+  <h4>Users List</h4>
+  <%= link_to "New User", new_user_path, class: "btn btn-primary" %>
+</div>
+<br />
 <table class="table table-striped" border="2">
   <thead>
     <tr>
