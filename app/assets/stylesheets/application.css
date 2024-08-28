@@ -63,13 +63,21 @@
 
 /* Post_Avtar_Preview */
 .postavtar{
+  border-radius: 25%;
+  width: 150px;
+  height: 80px;
+  object-fit: cover;
+}
+
+/* Dashnoard_Posts_Avtar_Preview */
+.dashboardavtar{
   border-radius: 50%;
   width: 40px;
   height: 40px;
   object-fit: cover;
 }
 
-/* Enlarging_avtar */
+/* Dashnoard_Enlarging_avtar */
 .enlarged {
   position: absolute;
   width: 300px;

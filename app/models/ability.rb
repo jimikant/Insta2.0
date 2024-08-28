@@ -37,7 +37,7 @@ class Ability
         can %i[new create], Post if user.posts.count < 10
       when '#5 Posts'
         can %i[new create], Post if user.posts.count < 5
-      when '#2 posts'
+      when '#2 Posts'
         can %i[new create], Post if user.posts.count < 2
       end
     end
