@@ -3,7 +3,7 @@
   border-radius: 15%;
   border: outset;
   width: 110%;
-  height: 62px;
+  height: 50px;
   object-fit: cover;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -51,7 +51,7 @@
 }
 
 
-/* Global_Avtar_Preview */
+/* Navbar&Enlarge_Avtar_Preview */
 .avtar{
   border-radius: 50%;
   width: 80px;
@@ -77,7 +77,7 @@
   object-fit: cover;
 }
 
-/* Dashnoard_Enlarging_avtar */
+/* Enlarging_dashnoard_avtar_functionality */
 .enlarged {
   position: absolute;
   width: 300px;

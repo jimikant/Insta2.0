@@ -53,6 +53,7 @@
     
                     <!-- Post Title and Tags -->
                     <h5 class="card-title mb-2"><strong>Title:</strong> <%= post.title %></h5>
+                    <p class="card-text"><strong>Description:</strong> <%= post.description.truncate(10) %></p>
                     <% if post.tags.any? %>
                       <div class="mb-3">
                         <strong>Tags:</strong>
@@ -63,33 +64,34 @@
                     <% else %>
                       <p class="text-muted mb-3"><strong>No Tags available</strong></p>
                     <% end %>
-                    <p class="card-text"><strong>Description:</strong> <%= post.description %></p>
     
                     <!-- Toggle Button for Liking/Disliking -->
                     <div class="d-flex align-items-center mb-3">
                       <div class="me-3">
                         <span class="likes-count fs-5 text-muted">
-                          <%= post.likes.count %>
+                          <strong><%= post.likes.count %></strong> 
+                          <%= post.likes.count == 1 ? 'like' : 'likes' %>
                         </span>
                       </div>
                       <div>
                         <% if post.likes.where(user: @user).exists? %>
-                          <%= form_with(url: destroy_like_path(user_id: @user.id, id: post.likes.find_by(user: @user).id), method: :delete, local: true) do |form| %>
+                          <%= form_with(url: destroy_like_path(user_id: @user.id, id: post.likes.find_by(user: @user).id), method: :delete, local: true, class: "like-form") do |form| %>
                             <%= form.radio_button :like, true, id: "like#{post.id}", class: "d-none" %>
-                            <%= form.label :like, class: "btn btn-outline-danger btn-sm", id: "liked#{post.id}", for: "like#{post.id}" do %>
+                            <%= form.label :like, class: "btn btn-outline-danger btn-sm like-btn active", id: "liked#{post.id}", for: "like#{post.id}" do %>
                               <span class="like-text">Liked</span>
                             <% end %>
                           <% end %>
                         <% else %>
-                          <%= form_with(url: likes_path(user_id: @user.id, post_id: post.id), method: :post, local: true) do |form| %>
+                          <%= form_with(url: likes_path(user_id: @user.id, post_id: post.id), method: :post, local: true, class: "like-form") do |form| %>
                             <%= form.radio_button :like, true, id: "like#{post.id}", class: "d-none" %>
-                            <%= form.label :like, class: "btn btn-outline-danger btn-sm", id: "like#{post.id}", for: "like#{post.id}" do %>
+                            <%= form.label :like, class: "btn btn-outline-danger btn-sm like-btn", id: "like#{post.id}", for: "like#{post.id}" do %>
                               <span class="like-text">Like</span>
                             <% end %>
                           <% end %>
                         <% end %>
                       </div>
                     </div>
+
                     <%= link_to 'Show Post', post_path(post), class: "btn btn-info btn-sm" %>
                   </div>
                 </div>

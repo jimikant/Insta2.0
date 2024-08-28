@@ -1,0 +1,6 @@
+// Find the like button and update its text and class
+$("#like-btn-<%= @post.id %>").html('<span class="like-text">Liked</span>');
+$("#like-btn-<%= @post.id %>").addClass('active').attr('id', 'liked');
+
+// Update the likes count
+$(".likes-count-<%= @post.id %>").text('<%= @post.likes.count %>');
