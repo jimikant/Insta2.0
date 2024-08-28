@@ -1,3 +1,10 @@
+/* Set_Background */
+body {
+  background: linear-gradient(120deg, #f0f4c3, #b2dfdb);
+  background-attachment: fixed;
+  background-size: cover;
+}
+
 /* Application_logo */
 .logo{
   border-radius: 15%;

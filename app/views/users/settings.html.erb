@@ -8,11 +8,11 @@
       <%= link_to "Add Tags", tags_path, class: "btn btn-primary btn-lg btn-block" %>
     </li>
     <li class="mb-4">
-      <%= button_to 'Delete User', destroy_user_path(@user), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure delete User?' }, class: "btn btn-danger btn-lg btn-block" %>
+      <%= button_to 'Delete User', destroy_user_path(@user), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure Delete User?' }, class: "btn btn-danger btn-lg btn-block" %>
     </li>
     <li class="mb-4">
       <% if current_user.current_subscription.present? %>
-        <%= button_to 'Cancel Subscription', destroy_subscription_path(@subscription.stripe_subscription_id), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to cancel your subscription?' }, class: "btn btn-danger btn-lg btn-block" %>
+        <%= button_to 'Cancel Subscription', destroy_subscription_path(@subscription.stripe_subscription_id), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to Cancel your Subscription?' }, class: "btn btn-danger btn-lg btn-block" %>
       <% else %>
         <%= link_to 'Subscription', subscriptions_path, class: "btn btn-warning btn-lg btn-block" %>
       <% end %>
