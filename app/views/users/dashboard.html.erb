@@ -6,7 +6,7 @@
 <% end %>
 <br/>
 
-<div class="header bg-white" style="display: flex; flex-direction: row; justify-content: flex-start; overflow-x: auto; white-space: nowrap;">
+<div class="header bg-white border border-dark rounded-4" style="display: flex; flex-direction: row; justify-content: flex-start; overflow-x: auto; white-space: nowrap;">
   <% @users.each do |user| %>
     <div class= "username text-start m-4">
       <span class= "text-dark text-decoration-none">
@@ -42,7 +42,7 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <div class="card mb-4">
+        <div class="card mb-4 border border-dark">
           <div class="card-header d-flex align-items-center bg-white">
             <% if post&.user&.profile&.avtar&.attached? %>
               <%= image_tag post.user.profile.avtar_variant, class: 'dashboardavtar me-2' %>

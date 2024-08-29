@@ -2,7 +2,7 @@
   <div class="row">
     
     <!-- My Profile Section -->
-    <div class="col-md-4 d-flex flex-column justify-content-start align-items-center bg-white p-3 border" style="height: 70vh; margin-top: 55px;">
+    <div class="col-md-4 d-flex flex-column justify-content-start align-items-center bg-white p-3 border border-dark rounded" style="height: 70vh; margin-top: 55px;">
       <h4>My Profile</h4>
       <% if @user.profile.present? %>
         <% if @user.profile.avtar.attached? %>
@@ -25,7 +25,7 @@
     </div>
 
     <!-- My Posts Section -->
-    <div class="col-md-8 d-flex flex-column" style="height: 90vh; overflow-y: auto;">
+    <div class="col-md-8 d-flex flex-column" style="height: 85vh; overflow-y: auto;">
     <br /><br />
       <div class="container">
         <h4 class="mb-4">My Posts</h4>
@@ -33,7 +33,7 @@
           <div class="row">
             <% @posts.each do |post| %>
               <div class="col-md-12 mb-4">
-                <div class="card shadow-sm rounded">
+                <div class="card shadow-sm rounded border border-dark">
                   <div class="card-body">
                     <!-- Post Image -->
                     <% if post.image.attached? %>
@@ -90,7 +90,7 @@
             <% end %>
           </div>
         <% else %>
-          <div class="d-flex flex-column justify-content-center align-items-center text-center border rounded p-4" style="height: 80vh;">
+          <div class="d-flex flex-column justify-content-center align-items-center text-center border border-dark rounded p-4" style="height: 75vh;">
             <%= image_tag 'default_post.jpg', class: 'img-fluid mb-3', alt: 'No Posts', style: 'max-width: 200px;' %>
             <h5 class="text-muted">No Posts Yet</h5>
             <p class="text-muted">You haven't created any posts yet.</p>

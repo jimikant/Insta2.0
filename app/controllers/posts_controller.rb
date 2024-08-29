@@ -3,7 +3,7 @@
 class PostsController < ApplicationController
   before_action :find_user, except: %i[index update]
   before_action :set_post, except: %i[index new create]
-  before_action :authorize_user, except: %i[index show destroy]
+  before_action :authorize_user, except: %i[index show]
   after_action :notify_user, only: [:create]
 
   def set_post
