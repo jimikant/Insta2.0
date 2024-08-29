@@ -3,7 +3,7 @@
 class PostsController < ApplicationController
   before_action :find_user, except: %i[index update]
   before_action :set_post, except: %i[index new create]
-  before_action :authorize_user, except: %i[index show]
+  before_action :authorize_user, except: %i[index show destroy]
   after_action :notify_user, only: [:create]
 
   def set_post
@@ -45,7 +45,11 @@ class PostsController < ApplicationController
     @post = Post.friendly.find(params[:id])
     @post.destroy
 
-    redirect_to profile_path
+    if current_user.admin?
+      redirect_to user_index_path
+    else
+      redirect_to profile_path
+    end
   end
 
   private
@@ -64,7 +68,5 @@ class PostsController < ApplicationController
 
   def authorize_user
     authorize! action_name.to_sym, @post || Post
-  rescue CanCan::AccessDenied => e
-    redirect_to dashboard_path, alert: "#{e.message} --- For upload the posts Subscribe the appropriate Subscription Plan."
   end
 end

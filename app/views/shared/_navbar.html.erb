@@ -49,6 +49,21 @@
                     <%= link_to 'My Profile', profile_path, class: 'dropdown-item' %>
                   </li>
                   <hr class= "mt-0 mb-0">
+
+                  <!-- Admin Controller Options -->
+                  <% if current_user.admin? %>
+                    <% if controller_name == "users" && action_name == "user_index" %>
+                      <li>
+                        <%= link_to 'All Posts', dashboard_path, class: 'dropdown-item' %>
+                      </li>
+                    <% elsif controller_name == "users" && action_name == "dashboard" %>
+                      <li>
+                        <%= link_to 'User List', user_index_path, class: 'dropdown-item' %>
+                      </li>
+                    <% end %>
+                    <hr class= "mt-0 mb-0">
+                  <% end %>
+
                   <li>
                     <%= link_to 'Settings', user_settings_path, class: 'dropdown-item' %>
                   </li>

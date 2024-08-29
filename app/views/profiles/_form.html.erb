@@ -1,6 +1,6 @@
 <% if @profile.avtar.attached? %>
   <div class="avtar-preview mb-3">
-    <%= image_tag @profile.avtar_variant, class: 'avtar img-fluid' %>
+    <%= image_tag @profile.avtar_variant, class: 'avtar' %>
   </div>
   <%= button_to 'Delete Avtar', delete_avtar_path(@user), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete the Avtar?' }, class: 'btn btn-danger' %>
 <% else %>

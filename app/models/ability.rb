@@ -7,25 +7,23 @@ class Ability
     user ||= User.new # Guest user (not logged in)
 
     if user.admin?
-      can :manage, User
-      can :manage, Profile do |profile|
-        profile.user == user
-      end
-      can :manage, Post do |post|
-        post.user == user
-      end
+      can :read, User
+      can :destroy, User
+      can :user_index, User
+      # can :manage, User, id: user.id
+
+      can :manage, Profile, id: user.id
+
+      can :manage, Post, id: user.id
+
     else
-      can :manage, Profile do |profile|
-        profile.user == user
-      end
+      can :manage, Profile, id: user.id
 
       # # All users can read posts
       can :read, Post
 
       # Users can manage their own posts
-      can [:edit, :update, :destroy], Post do |post|
-        post.user == user
-      end
+      can [:edit, :update, :destroy], Post, id: user.id
 
       user_subscription = user.current_subscription
       return unless user_subscription # Return if the user does not have an active subscription

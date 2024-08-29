@@ -44,7 +44,7 @@
     
                     <!-- Post Title and Tags -->
                     <h5 class="card-title mb-2"><%= post.title %></h5>
-                    <p class="card-text"><strong>Description:</strong> <%= post.description.truncate(16) %></p>
+                    <p class="card-text"><strong>Description:</strong> <%= post.description %></p>
                     <% if post.tags.any? %>
                       <div class="mb-3">
                         <strong>Tags:</strong>
@@ -82,7 +82,8 @@
                         <% end %>
                       </div>
                     </div>
-
+                    
+                    <%= link_to 'Show Post', post_path(post), class: "btn btn-info btn-sm" %>
                   </div>
                 </div>
               </div>
