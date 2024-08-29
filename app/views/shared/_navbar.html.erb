@@ -37,9 +37,9 @@
               <div class="btn-profile dropdown">
                 <li class="nav-item dropdown" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                   <% if current_user&.profile&.avtar&.attached? %>
-                    <%= image_tag current_user.profile.avtar_variant, class: 'avtar' %>
+                    <%= image_tag current_user.profile.avtar_variant, class: 'avtar border border-dark' %>
                   <% else %>
-                    <%= image_tag 'default_avtar.png', class: 'avtar' %>
+                    <%= image_tag 'default_avtar.png', class: 'avtar border border-dark' %>
                   <% end %>
                 </li>
 
