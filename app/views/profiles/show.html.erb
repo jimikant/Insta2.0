@@ -2,39 +2,40 @@
   <div class="row">
     
     <!-- My Profile Section -->
-    <div class="col-md-4 d-flex flex-column justify-content-start align-items-center bg-white p-3 border" style="height: 80vh; margin-top: 55px;">
+    <div class="col-md-4 d-flex flex-column justify-content-start align-items-center bg-white p-3 border border-dark rounded" style="height: 80vh; margin-top: 55px;">
+      <h4 class="text-center font-weight-bold mb-4">My Profile</h4>
       <% if @profile.present? %>
-        <h4 class="text-center font-weight-bold mb-4">My Profile</h4>
-        <% if @profile.avtar.attached? %>
-          <%= image_tag @profile.avtar_variant, class: 'postavtar' %>
-        <% else %>
-          <%= image_tag 'default_avtar.png', class: 'postavtar' %>
-        <% end %>
-        <br/>
-        <p><strong>First name:</strong> <%= @profile.first_name %></p>
-        <p><strong>Last name:</strong> <%= @profile.last_name %></p>
-        <p><strong>Phone:</strong> <%= @profile.phone %></p>
-        <p><strong>Address:</strong> <%= @profile.address %></p>
-        <br />
-        <%= link_to 'Edit Profile', edit_profile_path, class: "btn btn-warning mb-2" %>
-        <%= button_to 'Delete', destroy_profile_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure Delete Profile?' }, class: "btn btn-danger w-100" %>
-      <% else %>
-        <h4 class="mb-0">My Profile</h4>
         <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%; text-align: center;">
-          <%= image_tag 'default_avtar.png', class: 'img-fluid mb-3', alt: 'Default Profile', style: 'max-width: 150px;' %>
+          <% if @profile.avtar.attached? %>
+            <%= image_tag @profile.avtar_variant, class: 'postavtar mb-3 border border-dark', style: 'max-width: 150px;' %>
+          <% else %>
+            <%= image_tag 'default_avtar.png', class: 'postavtar mb-3 border border-dark', style: 'max-width: 150px;' %>
+          <% end %>
+          <br/>
+          <p><strong>First name:</strong> <%= @profile.first_name %></p>
+          <p><strong>Last name:</strong> <%= @profile.last_name %></p>
+          <p><strong>Phone:</strong> <%= @profile.phone %></p>
+          <p><strong>Address:</strong> <%= @profile.address %></p>
+          <br />
+          <%= link_to 'Edit Profile', edit_profile_path, class: "btn btn-warning mb-2" %>
+          <%= button_to 'Delete', destroy_profile_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete your profile?' }, class: "btn btn-danger w-100" %>
+        </div>
+      <% else %>
+        <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%; text-align: center;">
+          <%= image_tag 'default_avtar.png', class: 'img-fluid mb-3', alt: 'Default Profile Avatar', style: 'max-width: 150px;' %>
           <h5 class="text-muted">No Profile Created Yet</h5>
           <p class="text-muted">It looks like you haven't set up your profile yet. Create your profile to start personalizing your experience.</p>
           <%= link_to "Create Your Profile", new_profile_path, class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>
-
+    
     <!-- My Posts Section -->
     <div class="col-md-8 d-flex flex-column" style="height: 90vh; overflow-y: auto;">
     <br /><br />
       <div class="container">
         <% if @posts.any? %>
-          <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-4 border">
             <h4 class="mb-0">My Posts</h4>
             <%= link_to "Create Post", new_post_path, class: "btn btn-primary" %>
           </div>
@@ -42,12 +43,12 @@
           <div class="row">
             <% @posts.each do |post| %>
               <div class="col-md-12 mb-4">
-                <div class="card shadow-sm rounded">
+                <div class="card shadow-sm rounded border border-dark">
                   <div class="card-body">
                     <!-- Post Image -->
                     <% if post.image.attached? %>
                       <div class="mb-2">
-                        <%= image_tag url_for(post.image), class: "img-fluid rounded mb-2", style: "max-height: 300px; object-fit: cover; aspect-ratio: 16 / 9;" %>
+                        <%= image_tag url_for(post.image), class: "img-fluid rounded mb-2 border border-dark", style: "max-height: 300px; object-fit: cover; aspect-ratio: 16 / 9;" %>
                       </div>
                     <% end %>
     
@@ -100,8 +101,8 @@
           </div>
         <% else %>
           <h4 class="mb-4">My Posts</h4>
-          <div class="d-flex flex-column justify-content-center align-items-center text-center border rounded p-4" style="height: 80vh;">
-            <%= image_tag 'default_post.jpg', class: 'img-fluid mb-3', alt: 'No Posts', style: 'max-width: 200px;' %>
+          <div class="d-flex flex-column justify-content-center align-items-center text-center border border-dark rounded p-4" style="height: 75vh;">
+            <%= image_tag 'default_post.jpg', class: 'img-fluid mb-3 border border-dark', alt: 'No Posts', style: 'max-width: 200px;' %>
             <h5 class="text-muted">No Posts Yet</h5>
             <p class="text-muted">You haven't created any posts yet. Start sharing your thoughts and experiences!</p>
             <%= link_to "Create Your First Post", new_post_path, class: "btn btn-primary mt-3" %>

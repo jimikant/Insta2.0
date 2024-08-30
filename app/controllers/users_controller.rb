@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :authorize_user, only: %i[user_index index edit]
+  before_action :authorize_user, only: %i[user_index index new edit destroy]
 
   def user_index
     @users = User.all.user_asc_order

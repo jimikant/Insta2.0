@@ -10,20 +10,28 @@ class Ability
       can :read, User
       can :destroy, User
       can :user_index, User
-      # can :manage, User, id: user.id
+      can :new, User
 
-      can :manage, Profile, id: user.id
+      can :manage, Profile do |profile|
+        profile.user == user
+      end
 
-      can :manage, Post, id: user.id
-
+      can :destroy, Post
+      can :manage, Post do |post|
+        post.user == user
+      end
     else
-      can :manage, Profile, id: user.id
+      can :manage, Profile do |profile|
+        profile.user == user
+      end
 
       # # All users can read posts
       can :read, Post
 
       # Users can manage their own posts
-      can [:edit, :update, :destroy], Post, id: user.id
+      can [:edit, :update, :destroy, :new], Post do |post|
+        post.user == user
+      end
 
       user_subscription = user.current_subscription
       return unless user_subscription # Return if the user does not have an active subscription
