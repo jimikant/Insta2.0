@@ -16,8 +16,15 @@ class User < ApplicationRecord
 
   validates :username, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :password, presence: true, confirmation: true
-  validates :password_confirmation, presence: true
+  validates :password, confirmation: true, if: -> { password.present? }
+  validates :password_confirmation, presence: true, if: -> { password.present? }
+
+  # Override password_required? to conditionally skip password validation
+  def password_required?
+    return false if skip_password_validation?
+    super
+  end
+
 
   # Scopes Ascending and Descending Order
   default_scope -> { order(created_at: :desc) }
@@ -50,6 +57,11 @@ class User < ApplicationRecord
   after_destroy :delete_stripe_customer
 
   private
+
+  # This flag is used to determine whether to skip password validation
+  def skip_password_validation?
+    @skip_password_validation
+  end
 
   # For creating_update_and_destroing_strip_customer_id
   def create_stripe_customer

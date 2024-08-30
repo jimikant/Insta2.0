@@ -27,32 +27,6 @@
   <br/>
 
   <div class="mb-3 row">
-    <%= form.label :password, class: "col-sm-2 col-form-label bold-label" %>
-    <div class="col-sm-10">
-      <%= form.text_field :password, class: "form-control" %>
-      <% if @user.errors[:password].any? %>
-        <div class="text-danger mt-2">
-          <%= @user.errors[:password].join(", ") %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-  <br/>
-
-  <div class="mb-3 row">
-    <%= form.label :password_confirmation, class: "col-sm-2 col-form-label bold-label" %>
-    <div class="col-sm-10">
-      <%= form.text_field :password_confirmation, class: "form-control" %>
-      <% if @user.errors[:password_confirmation].any? %>
-        <div class="text-danger mt-2">
-          <%= @user.errors[:password_confirmation].join(", ") %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-  <br/>
-
-  <div class="mb-3 row">
     <div class="col-sm-10 offset-sm-2">
       <%= form.submit class: "btn btn-primary w-25" %>
     </div>
