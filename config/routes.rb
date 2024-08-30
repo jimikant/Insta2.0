@@ -3,6 +3,8 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  get 'passwords/edit'
+  get 'passwords/update'
   # For webhooks
   post 'webhooks/stripe', to: 'webhooks#stripe'
 
@@ -17,6 +19,8 @@ Rails.application.routes.draw do
   end
 
   devise_for :users
+
+  resources :passwords, only: [:edit, :update]
 
   root 'users#index'
 

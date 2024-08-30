@@ -1,0 +1,19 @@
+<h2>Reset your password</h2>
+
+<%= form_with model: @user, url: password_path(resource_name), method: :put do |form| %>
+  <%= form.hidden_field :reset_password_token, value: params[:reset_password_token] %>
+
+  <div class="field">
+    <%= form.label :password %>
+    <%= form.password_field :password, autofocus: true, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password_confirmation %>
+    <%= form.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Reset Password" %>
+  </div>
+<% end %>

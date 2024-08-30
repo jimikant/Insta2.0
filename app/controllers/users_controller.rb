@@ -30,13 +30,17 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    # Skip password validation if the user is being created by an admin
+    # Skip password validation and welcome email if the user is being created by an admin
     if current_user.admin?
       @user.instance_variable_set(:@skip_password_validation, true)
     end
 
-    if @user.save!
-      redirect_to user_index_path, notice: 'User was successfully created.'
+    if @user.save
+      if current_user.admin?
+        @user.generate_reset_password_token! # Generate password reset token
+        UserMailer.with(user: @user).send_invite_email.deliver_now # Send invite email
+      end
+      redirect_to user_index_path, notice: 'User was successfully created and invite sent.'
     else
       render :new
     end

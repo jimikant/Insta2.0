@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
 
   # For user_role
@@ -25,7 +26,6 @@ class User < ApplicationRecord
     super
   end
 
-
   # Scopes Ascending and Descending Order
   default_scope -> { order(created_at: :desc) }
   scope :user_asc_order, -> { reorder(created_at: :asc) }
@@ -39,11 +39,16 @@ class User < ApplicationRecord
   end
 
   # For sending_email_to_user
-  after_create :send_welcome_email
+  after_create :send_welcome_email, unless: :skip_welcome_email?
 
   def send_welcome_email
     Rails.logger.info "Enqueuing welcome email for user #{id}"
     MailerJob.perform_async(id)
+  end
+
+  # For skipping welcome email when the user is created by an admin
+  def skip_welcome_email?
+    @skip_password_validation.present? && @skip_password_validation
   end
 
   # For subscription_status
@@ -56,6 +61,23 @@ class User < ApplicationRecord
   after_update :update_stripe_customer
   after_destroy :delete_stripe_customer
 
+  # Generate password reset token
+  def generate_reset_password_token!
+    token = SecureRandom.hex(10)
+    update(reset_password_token: token, reset_password_sent_at: Time.current)
+  end
+
+  # Check if password reset token has expired
+  def reset_password_token_expired?
+    return true if reset_password_sent_at.nil?
+    reset_password_sent_at < 2.hours.ago
+  end
+
+  # Clear the reset password token after successful reset
+  def clear_reset_password_token!
+    update(reset_password_token: nil, reset_password_sent_at: nil)
+  end
+
   private
 
   # This flag is used to determine whether to skip password validation
@@ -63,7 +85,7 @@ class User < ApplicationRecord
     @skip_password_validation
   end
 
-  # For creating_update_and_destroing_strip_customer_id
+  # For creating, updating, and destroying Stripe customer ID
   def create_stripe_customer
     stripe_customer = Stripe::Customer.create({
                                                 email: email,
@@ -80,7 +102,7 @@ class User < ApplicationRecord
                                                 name: username
                                               })
 
-    Rails.logger.debug { "Stripe_customer_details: #{stripe_response}" }
+    Rails.logger.debug { "Stripe customer details: #{stripe_response}" }
   end
 
   def delete_stripe_customer
@@ -93,7 +115,7 @@ class User < ApplicationRecord
     end
   end
 
-  # Email_normalize
+  # Email normalization
   def normalize_email
     return if email.blank?
 
