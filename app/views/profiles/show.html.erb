@@ -1,54 +1,74 @@
 <div class="container-fluid">
-  <div class="row">
-    
-    <!-- My Profile Section -->
-    <div class="col-md-4 d-flex flex-column justify-content-start align-items-center bg-white p-3 border border-dark rounded" style="height: 80vh; margin-top: 55px;">
-      <h4 class="text-center font-weight-bold mb-4">My Profile</h4>
+  <div class="row justify-content-center">
+
+    <!-- Profile Header Section -->
+    <div class="col-md-8 d-flex flex-column align-items-center text-center p-3">
       <% if @profile.present? %>
-        <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%; text-align: center;">
+        <div class="d-flex flex-column align-items-center">
+          <!-- Profile Avatar -->
           <% if @profile.avtar.attached? %>
-            <%= image_tag @profile.avtar_variant, class: 'postavtar mb-3 border border-dark', style: 'max-width: 150px;' %>
+            <%= image_tag @profile.avtar_variant, class: 'rounded-circle border border-dark mb-3', 
+            style: 'width: 150px; height: 150px; object-fit: cover;' %>
           <% else %>
-            <%= image_tag 'default_avtar.png', class: 'postavtar mb-3 border border-dark', style: 'max-width: 150px;' %>
+            <%= image_tag 'default_avtar.png', class: 'rounded-circle border border-dark mb-3', 
+            style: 'width: 150px; height: 150px; object-fit: cover;' %>
           <% end %>
-          <br/>
-          <p><strong>First name:</strong> <%= @profile.first_name %></p>
-          <p><strong>Last name:</strong> <%= @profile.last_name %></p>
-          <p><strong>Phone:</strong> <%= @profile.phone %></p>
-          <p><strong>Address:</strong> <%= @profile.address %></p>
-          <br />
-          <%= link_to 'Edit Profile', edit_profile_path, class: "btn btn-warning mb-2" %>
-          <%= button_to 'Delete', destroy_profile_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete your profile?' }, class: "btn btn-danger w-100" %>
+
+          <!-- User Name and Bio -->
+          <h2 class="font-weight-bold mb-0"><%= @profile.first_name %> <%= @profile.last_name %></h2>
+          <p class="text-muted mb-3">@<%= @user.username %></p>
+
+          <!-- Profile Details -->
+          <div class="d-flex justify-content-around w-100 mb-3">
+            <div class="text-center me-4">
+              <span><%= @user.posts.count %></span><br />
+              <strong>Posts</strong>
+            </div>
+            <div class="text-center me-4">
+              <strong>Phone</strong><br />
+              <span><%= @profile.phone %></span>
+            </div>
+            <div class="text-center me-4">
+              <strong>Address</strong><br />
+              <span><%= @profile.address %></span>
+            </div>
+          </div>
+
+          <!-- Edit Profile Button -->
+          <div class="d-flex">
+            <%= link_to 'Edit Profile', edit_profile_path, class: "btn btn-outline-dark me-2" %>
+            <%= button_to 'Delete Profile', destroy_profile_path, method: :delete, data: { confirm: 'Are you sure you want to delete your profile?' }, class: "btn btn-danger" %>
+          </div>
         </div>
       <% else %>
-        <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%; text-align: center;">
-          <%= image_tag 'default_avtar.png', class: 'img-fluid mb-3', alt: 'Default Profile Avatar', style: 'max-width: 150px;' %>
+        <div class="d-flex flex-column justify-content-center align-items-center" style="text-align: center;">
+          <%= image_tag 'default_avtar.png', class: 'img-fluid mb-3 rounded-circle', alt: 'Default Profile Avatar', style: 'width: 150px; height: 150px;' %>
           <h5 class="text-muted">No Profile Created Yet</h5>
           <p class="text-muted">It looks like you haven't set up your profile yet. Create your profile to start personalizing your experience.</p>
           <%= link_to "Create Your Profile", new_profile_path, class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>
-    
+    <hr class= "w-50 border border-dark">
+
     <!-- My Posts Section -->
-    <div class="col-md-8 d-flex flex-column" style="height: 90vh; overflow-y: auto;">
-    <br /><br />
-      <div class="container">
-        <% if @posts.any? %>
-          <div class="d-flex justify-content-between align-items-center mb-4 border">
-            <h4 class="mb-0">My Posts</h4>
-            <%= link_to "Create Post", new_post_path, class: "btn btn-primary" %>
-          </div>
-          
+    <div class="col-md-8 d-flex flex-column" style="height: 85vh; overflow-y: auto;">
+      <div class="container mt-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4 class="mb-0">My Posts</h4>
+          <%= link_to "Create Post", new_post_path, class: "btn btn-primary" %>
+        </div>
+        <% if @posts.present? %>
           <div class="row">
             <% @posts.each do |post| %>
-              <div class="col-md-12 mb-4">
-                <div class="card shadow-sm rounded border border-dark">
+              <div class="col-md-6 mb-4">
+                <div class="card shadow-sm rounded border border-dark" style="height: auto;">
                   <div class="card-body">
                     <!-- Post Image -->
                     <% if post.image.attached? %>
                       <div class="mb-2">
-                        <%= image_tag url_for(post.image), class: "img-fluid rounded mb-2 border border-dark", style: "max-height: 300px; object-fit: cover; aspect-ratio: 16 / 9;" %>
+                        <%= image_tag url_for(post.image), class: "img-fluid rounded mb-2 border border-dark", 
+                        style: "max-height: 200px; object-fit: cover; aspect-ratio: 16 / 9;" %>
                       </div>
                     <% end %>
     
@@ -59,7 +79,7 @@
                       <div class="mb-3">
                         <strong>Tags:</strong>
                         <% post.tags.each do |tag| %>
-                          <span class="badge bg-dark text-white me-1" style="font-size: 0.75rem;"><%= tag.name %></span>
+                          <span class="badge bg-dark text-white me-1"><%= tag.name %></span>
                         <% end %>
                       </div>
                     <% else %>
@@ -69,7 +89,7 @@
                     <!-- Toggle Button for Liking/Disliking -->
                     <div class="d-flex align-items-center mb-3">
                       <div class="me-3">
-                        <span class="likes-count fs-5 text-muted">
+                        <span class="likes-count">
                           <strong><%= post.likes.count %></strong> 
                           <%= post.likes.count == 1 ? 'like' : 'likes' %>
                         </span>
@@ -78,21 +98,21 @@
                         <% if post.likes.where(user: @user).exists? %>
                           <%= form_with(url: destroy_like_path(user_id: @user.id, id: post.likes.find_by(user: @user).id), method: :delete, local: true, class: "like-form") do |form| %>
                             <%= form.radio_button :like, true, id: "like#{post.id}", class: "d-none" %>
-                            <%= form.label :like, class: "btn btn-outline-danger btn-sm like-btn active", id: "liked#{post.id}", for: "like#{post.id}" do %>
+                            <%= form.label :like, class: "btn btn-outline-danger btn-sm like-btn active", for: "like#{post.id}" do %>
                               <span class="like-text">Liked</span>
                             <% end %>
                           <% end %>
                         <% else %>
                           <%= form_with(url: likes_path(user_id: @user.id, post_id: post.id), method: :post, local: true, class: "like-form") do |form| %>
                             <%= form.radio_button :like, true, id: "like#{post.id}", class: "d-none" %>
-                            <%= form.label :like, class: "btn btn-outline-danger btn-sm like-btn", id: "like#{post.id}", for: "like#{post.id}" do %>
+                            <%= form.label :like, class: "btn btn-outline-danger btn-sm like-btn", for: "like#{post.id}" do %>
                               <span class="like-text">Like</span>
                             <% end %>
                           <% end %>
                         <% end %>
                       </div>
                     </div>
-
+                    
                     <%= link_to 'Show Post', post_path(post), class: "btn btn-info btn-sm" %>
                   </div>
                 </div>
@@ -100,17 +120,14 @@
             <% end %>
           </div>
         <% else %>
-          <h4 class="mb-4">My Posts</h4>
           <div class="d-flex flex-column justify-content-center align-items-center text-center border border-dark rounded p-4" style="height: 75vh;">
             <%= image_tag 'default_post.jpg', class: 'img-fluid mb-3 border border-dark', alt: 'No Posts', style: 'max-width: 200px;' %>
             <h5 class="text-muted">No Posts Yet</h5>
-            <p class="text-muted">You haven't created any posts yet. Start sharing your thoughts and experiences!</p>
-            <%= link_to "Create Your First Post", new_post_path, class: "btn btn-primary mt-3" %>
+            <p class="text-muted">You haven't created any posts yet.</p>
           </div>
         <% end %>
-
       </div>
     </div>
-    
+
   </div>
 </div>
