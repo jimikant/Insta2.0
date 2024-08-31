@@ -12,11 +12,11 @@
         <div class="card mb-4">
           <% if product.image.attached? %>
             <div class="card-img-top">
-              <%= image_tag product.image, class: 'card-img-top' %>
+              <%= image_tag product.image, class: 'card-img-top', style: "max-height: 200px; object-fit: cover; aspect-ratio: 16 / 9;" %>
             </div>
           <% else %>
             <div class="card-img-top">
-              <%= image_tag 'uploading_posts.jpg', class: 'card-img-top' %>
+              <%= image_tag 'uploading_posts.jpg', class: 'card-img-top', style: "max-height: 200px; object-fit: cover; aspect-ratio: 16 / 9;" %>
             </div>
           <% end %>
           <div class="card-body">

@@ -35,12 +35,12 @@ class UsersController < ApplicationController
       @user.instance_variable_set(:@skip_password_validation, true)
     end
 
-    if @user.save
+    if @user.save!
       if current_user.admin?
         @user.generate_reset_password_token! # Generate password reset token
         UserMailer.with(user: @user).send_invite_email.deliver_now # Send invite email
       end
-      redirect_to user_index_path, notice: 'User was successfully created and invite sent.'
+      redirect_to user_index_path, notice: 'User was successfully Created and Invite sent'
     else
       render :new
     end
@@ -49,7 +49,7 @@ class UsersController < ApplicationController
   def update
     @user = User.friendly.find(params[:id])
     if @user.update(user_params)
-      redirect_to user_index_path, notice: 'User updated!'
+      redirect_to user_index_path, notice: 'User Updated successfully'
     else
       render :edit
     end
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
       @profile&.destroy
 
       @user.destroy
-      redirect_to user_index_path, notice: 'User and associated Data deleted successfully.'
+      redirect_to user_index_path, notice: 'User and Associated data Deleted successfully'
     else
       @user = current_user
       @profile = @user.profile
@@ -71,7 +71,7 @@ class UsersController < ApplicationController
       @profile&.destroy
 
       @user.destroy
-      redirect_to root_path, notice: 'User and associated Data deleted successfully.'
+      redirect_to root_path, notice: 'User and Associated data Deleted successfully'
     end
   end
 

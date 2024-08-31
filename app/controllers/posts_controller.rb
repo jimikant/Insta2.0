@@ -25,7 +25,7 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.new(post_params)
     if @post.save!
-      redirect_to profile_path
+      redirect_to profile_path, notice: 'Post Created successfully'
     else
       render :new
     end
@@ -35,7 +35,7 @@ class PostsController < ApplicationController
     @user = current_user
     @post = Post.friendly.find(params[:id])
     if @post.update(post_params)
-      redirect_to profile_path
+      redirect_to profile_path, notice: 'Post Updated successfully'
     else
       render :edit
     end
@@ -46,9 +46,9 @@ class PostsController < ApplicationController
     @post.destroy
 
     if current_user.admin?
-      redirect_to user_index_path
+      redirect_to user_index_path, notice: 'Post Deleted successfully'
     else
-      redirect_to profile_path
+      redirect_to profile_path, notice: 'Post Deleted successfully'
     end
   end
 

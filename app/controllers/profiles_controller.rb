@@ -23,8 +23,8 @@ class ProfilesController < ApplicationController
     @user = current_user
     @profile = Profile.new(profile_params)
     @profile.user = @user
-    if @profile.save
-      redirect_to profile_path
+    if @profile.save!
+      redirect_to profile_path, notice: 'Profile Created successfully'
     else
       render :new
     end
@@ -34,7 +34,7 @@ class ProfilesController < ApplicationController
     @user = current_user
     @profile = @user.profile
     if @profile.update(profile_params)
-      redirect_to profile_path
+      redirect_to profile_path, notice: 'Profile Updated successfully'
     else
       render :edit
     end
@@ -44,14 +44,14 @@ class ProfilesController < ApplicationController
     @user = current_user
     @profile = @user.profile
     @profile.destroy
-    redirect_to profile_path
+    redirect_to profile_path, notice: 'Profile Deleted successfully'
   end
 
   def delete_avtar
     @user = current_user
     @profile = @user.profile
     @profile.avtar.purge
-    redirect_to edit_profile_path, notice: 'Avtar deleted successfully.'
+    redirect_to edit_profile_path, notice: 'Avtar Deleted successfully'
   end
 
   private

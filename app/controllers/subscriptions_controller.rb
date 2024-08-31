@@ -22,6 +22,9 @@ class SubscriptionsController < ApplicationController
                                                     cancel_url: dashboard_url
                                                   })
 
+      # Set the notice message
+      flash[:notice] = 'Subscription Created Successfully'
+
       # Respond with JavaScript to redirect
       respond_to do |format|
         format.html { redirect_to @session.url, allow_other_host: true }
@@ -38,10 +41,6 @@ class SubscriptionsController < ApplicationController
   def destroy
     @subscription = current_user.subscriptions.find_by(stripe_subscription_id: params[:stripe_subscription_id])
 
-    # p 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-    #   puts "subs :-  #{@subscription.inspect}"
-    # p 22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
-
     if @subscription
       Stripe::Subscription.cancel(@subscription.stripe_subscription_id)
 
@@ -51,6 +50,6 @@ class SubscriptionsController < ApplicationController
       flash[:alert] = 'Subscription not found.'
     end
 
-    redirect_to dashboard_path
+    redirect_to dashboard_path, notice: 'subscription Canceled successfully'
   end
 end

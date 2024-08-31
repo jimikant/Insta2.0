@@ -20,7 +20,12 @@ class Ability
       can :manage, Post do |post|
         post.user == user
       end
+
     else
+      can :manage, User do |user|
+        user.user == user
+      end
+
       can :manage, Profile do |profile|
         profile.user == user
       end
@@ -29,7 +34,7 @@ class Ability
       can :read, Post
 
       # Users can manage their own posts
-      can [:edit, :update, :destroy, :new], Post do |post|
+      can [:edit, :update, :destroy], Post do |post|
         post.user == user
       end
 
@@ -40,11 +45,11 @@ class Ability
       when '#Infinite Posts'
         can :create, Post
       when '#10 Posts'
-        can %i[new create], Post if user.posts.count < 10
+        can [:new, :create], Post if user.posts.count < 10
       when '#5 Posts'
-        can %i[new create], Post if user.posts.count < 5
+        can [:new, :create], Post if user.posts.count < 5
       when '#2 Posts'
-        can %i[new create], Post if user.posts.count < 2
+        can [:new, :create], Post if user.posts.count < 2
       end
     end
   end

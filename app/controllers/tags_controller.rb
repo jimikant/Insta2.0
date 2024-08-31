@@ -24,7 +24,7 @@ class TagsController < ApplicationController
     @user = current_user
     @tag = Tag.new(tag_params)
     if @tag.save
-      redirect_to tags_path
+      redirect_to tags_path, notice: 'Tag Created successfully'
     else
       render :new
     end
@@ -34,7 +34,7 @@ class TagsController < ApplicationController
     @user = current_user
     @tag = Tag.friendly.find(params[:id])
     if @tag.update(tag_params)
-      redirect_to tags_path
+      redirect_to tags_path, notice: 'Tag Updated successfully'
     else
       render :edit
     end
@@ -45,7 +45,7 @@ class TagsController < ApplicationController
     @tag = Tag.friendly.find(params[:id])
     @tag.destroy
 
-    redirect_to tags_path
+    redirect_to tags_path, notice: 'Tag Deleted successfully'
   end
 
   private
