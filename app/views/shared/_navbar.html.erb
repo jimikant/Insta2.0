@@ -6,7 +6,12 @@
           <%= image_tag("app_logo.png", class: "logo") %>
         <% end %>
         <% if controller_name == 'users' && (action_name == 'show' || action_name == 'new'|| action_name == 'edit') %>
-          <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
+          <% if current_user.admin? %>
+            <%= link_to 'Back to UserList', user_index_path, class: "btn btn-secondary" %>
+            <%= link_to 'Go to All Posts', dashboard_path, class: "btn btn-secondary" %>
+          <% else %>
+            <%= link_to 'Go to All Posts', dashboard_path, class: "btn btn-secondary" %>
+          <% end %>
         <% end %>
         <% if controller_name == 'profiles' && action_name == 'show' %>
           <% if current_user.admin? %>
