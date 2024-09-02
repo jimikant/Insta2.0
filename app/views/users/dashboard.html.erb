@@ -80,15 +80,15 @@
           <!-- Toggle Button for Liking/Disliking -->
           <div class="card-footer bg-white d-flex justify-content-between align-items-center">
             <div>
-              <% if post.likes.where(user: @user).exists? %>
-                <%= form_with(url: destroy_like_path(user_id: @user.id, id: post.likes.find_by(user: @user).id), method: :delete, local: true, class: "like-form") do |form| %>
+              <% if post.likes.where(user: current_user).exists? %>
+                <%= form_with(url: destroy_like_path(user_id: current_user.id, id: post.likes.find_by(user: current_user).id), method: :delete, local: true, class: "like-form") do |form| %>
                   <%= form.radio_button :like, true, id: "like#{post.id}", class: "d-none" %>
                   <%= form.label :like, class: "btn btn-outline-danger btn-sm like-btn active", id: "liked#{post.id}", for: "like#{post.id}" do %>
                     <span class="like-text">Liked</span>
                   <% end %>
                 <% end %>
               <% else %>
-                <%= form_with(url: likes_path(user_id: @user.id, post_id: post.id), method: :post, local: true, class: "like-form") do |form| %>
+                <%= form_with(url: likes_path(user_id: current_user.id, post_id: post.id), method: :post, local: true, class: "like-form") do |form| %>
                   <%= form.radio_button :like, true, id: "like#{post.id}", class: "d-none" %>
                   <%= form.label :like, class: "btn btn-outline-danger btn-sm like-btn", id: "like#{post.id}", for: "like#{post.id}" do %>
                     <span class="like-text">Like</span>

@@ -8,7 +8,6 @@ class UsersController < ApplicationController
   end
 
   def dashboard
-    @user = current_user
     @users = User.user_asc_order.includes(profile: { avtar_attachment: :blob })
     @posts = Post.includes(:user, :tags, image_attachment: :blob).page(params[:page]).per(2)
   end
