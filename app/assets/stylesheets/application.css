@@ -5,11 +5,6 @@ body {
   background-size: cover;
 }
 
-.avtar-preview .m-2{
-  color: #dc3545;
-  text-decoration: none;
-}
-
 /* Application_logo */
 .logo{
   border-radius: 15%;
