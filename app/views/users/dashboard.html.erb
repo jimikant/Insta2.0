@@ -13,7 +13,7 @@
         <% if user&.profile&.avtar&.attached? %>
           <div class="avtar-preview">
             <%= image_tag user.profile.avtar_variant, class: 'avtar useravtar border border-dark' %>
-            <%= link_to user_path(user) do %>
+            <%= link_to(user == current_user ? profile_path(user) : user_path(user)) do %>
               <% if user.profile.present? %>
                 <span class= "m-2"><strong><%= user.profile.first_name %></strong></span>
               <% else %>
