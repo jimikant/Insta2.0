@@ -22,7 +22,7 @@ class Ability
       end
 
     else
-      can :manage, User do |user|
+      can :destroy, User do |user|
         user.user == user
       end
 
