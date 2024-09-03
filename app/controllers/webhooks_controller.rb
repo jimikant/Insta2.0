@@ -52,7 +52,7 @@ class WebhooksController < ApplicationController
     when 'invoice.payment_succeeded'
       StripeSubscriptionService.new(subscription).sync_subscription_from_stripe
     when 'customer.subscription.deleted'
-      Subscription.find_by(stripe_subscription_id: subscription[:id])&.destroy
+      Subscription.find_by(stripe_subscription_id: subscription[:id])
     end
   end
 end
