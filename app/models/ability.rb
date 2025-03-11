@@ -11,6 +11,7 @@ class Ability
       can :destroy, User
       can :user_index, User
       can :new, User
+      can :edit, User
 
       can :manage, Profile do |profile|
         profile.user == user
