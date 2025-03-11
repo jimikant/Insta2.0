@@ -34,14 +34,26 @@
 
       <!-- Static Navbar Content -->
       <div class="navbar-expand justify-content-end">
-        <ul class="navbar-nav">
+        <div class="d-flex align-items-center justify-content-end position-relative p-3 mt-2 gap-3">
+          <div class="d-flex flex-column align-items-center gap-2">
+            <!-- Display Logged-in User's Name -->
+            <% if (controller_name == "users") && (action_name == "user_index" || action_name == "dashboard") %>
+              <span class="text-white fw-bold fs-4"><%= current_user.username %></span>  
+            <% end %>
+            
+            <!-- Display Discourse-Login Button -->
+            <% if ENV['DISCOURSE_SSO_SECRET'].present? && ENV['DISCOURSE_URL'].present? && (controller_name == "users") && (action_name == "user_index" || action_name == "dashboard") %>
+              <%= link_to "Login to Discourse", discourse_sso_path, class: "btn btn-sm btn-primary", target: "_blank", rel: "noopener noreferrer" %>
+            <% end %>
+          </div>
 
           <!-- User Profile Dropdown -->
-          <div class="user-profile-btn-group justify-content-end">
-            <% if controller_name == "users" && (action_name == "user_index" || action_name == "dashboard") %>
+          <div class="user-profile-btn-group">
+            <% if current_user %>  <!-- Ensure a user is logged in -->
               <div class="btn-profile dropdown">
-                <li class="nav-item dropdown" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                  <% if current_user&.profile&.avtar&.attached? %>
+                <li class="nav-item dropdown d-flex align-items-center gap-2" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <!-- Profile Picture -->
+                  <% if current_user.profile&.avtar&.attached? %>
                     <%= image_tag current_user.profile.avtar_variant, class: 'avtar border border-dark' %>
                   <% else %>
                     <%= image_tag 'default_avtar.png', class: 'avtar border border-dark' %>
@@ -53,7 +65,7 @@
                   <li>
                     <%= link_to 'My Profile', profile_path, class: 'dropdown-item' %>
                   </li>
-                  <hr class= "mt-0 mb-0">
+                  <hr class="mt-0 mb-0">
 
                   <!-- Admin Controller Options -->
                   <% if current_user.admin? %>
@@ -66,23 +78,21 @@
                         <%= link_to 'User List', user_index_path, class: 'dropdown-item' %>
                       </li>
                     <% end %>
-                    <hr class= "mt-0 mb-0">
+                    <hr class="mt-0 mb-0">
                   <% end %>
 
                   <li>
                     <%= link_to 'Settings', user_settings_path, class: 'dropdown-item' %>
                   </li>
-                  <hr class= "mt-0 mb-0">
+                  <hr class="mt-0 mb-0">
                   <li>
-                    <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-danger", method: :delete, data: { turbo_confirm: 'Are you sure you want to Logout?'}, style: "margin-top: 5px; margin-left: 5px;" %>
+                    <%= button_to 'Sign out', destroy_user_session_path, class: "btn btn-danger", method: :delete, data: { turbo_confirm: 'Are you sure you want to Logout?' }, style: "margin-top: 5px; margin-left: 5px;" %>
                   </li>
                 </ul>
-
               </div>
             <% end %>
           </div>
-
-        </ul>
+        </div>
       </div>
       
     </div>

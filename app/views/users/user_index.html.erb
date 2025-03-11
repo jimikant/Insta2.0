@@ -8,8 +8,9 @@
   <thead>
     <tr>
       <th>Avtar</th>
-      <th>Role</th>
+      <th>User-Name</th>
       <th>Email</th>
+      <th>Role</th>
       <th colspan="3">Actions</th>
     </tr>
   </thead>
@@ -29,8 +30,9 @@
             <%= image_tag 'default_avtar.png', class: 'avtar border border-dark', style: "max-height: 40px; max-width: 40px" %>
           <% end %>
         </td>
-        <td><%= user.role %></td>
+        <td><%= user.username %></td>
         <td><%= user.email %></td>
+        <td><%= user.role %></td>
         <td><%= link_to 'Show', (user == current_user ? profile_path : user_path(user)), class: "btn btn-info" %></td>
         <td><%= link_to 'Edit', edit_user_path(user), class: "btn btn-warning" %></td>
         <td><%= button_to 'Delete', destroy_user_path(user), method: :delete, data: {turbo_method: :delete, turbo_confirm: 'Are you sure Delete User?'}, class: "btn btn-danger" %></td>
