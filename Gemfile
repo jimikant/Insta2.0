@@ -123,3 +123,4 @@ end
 gem 'discourse_api'
 gem 'rack'
 gem 'dotenv-rails'
+gem 'faker'

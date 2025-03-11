@@ -1,5 +1,6 @@
 require 'digest/md5'
 require 'open-uri'
+require 'faker'
 
 def gravatar_url(email, size = 200)
   hash = Digest::MD5.hexdigest(email.downcase.strip)
@@ -43,5 +44,56 @@ users.each do |user_attrs|
     puts "🖼️ Profile picture set for: #{user.username}"
   rescue OpenURI::HTTPError => e
     puts "⚠️ Could not fetch profile picture for #{user.username}: #{e.message}"
+  end
+end
+
+nature_words = %w[
+  forest river ocean mountain valley meadow tree flower grassland desert 
+  waterfall hill glacier canyon reef jungle savanna tundra volcano lake 
+  rain cloud wind sunrise sunset storm thunder lightning mist breeze
+]
+tags = []
+20.times do
+  tag_name = "##{nature_words.sample}" # Ensure name starts with '#'
+  tags << Tag.find_or_create_by!(name: tag_name)
+end
+puts "🏷️ Created #{tags.count} nature-related tags."
+
+# ✅ Create 4 posts per user
+users.each do |user_attrs|
+  user = User.find_by(email: user_attrs[:email])
+
+  4.times do
+    # Use `create` instead of `create!` to avoid exceptions
+    post = user.posts.new(
+      title: Faker::Lorem.sentence(word_count: 5),
+      description: Faker::Lorem.paragraph(sentence_count: 3)
+    )
+
+    # Fetch and attach a nature image
+    begin
+      image_url = "https://picsum.photos/800/600" # Alternative: Unsplash URL
+      puts "🔗 Fetching image from: #{image_url}"
+
+      file = URI.open(image_url)
+      puts "✅ Image successfully fetched!"
+
+      post.image.attach(io: file, filename: "post_#{post.id}.jpg", content_type: 'image/jpeg')
+    rescue OpenURI::HTTPError => e
+      puts "⚠️ Could not fetch image for post: #{post.title}, error: #{e.message}"
+    rescue StandardError => e
+      puts "❌ Unexpected error: #{e.message}"
+    end
+
+    # **Force save without triggering validation**
+    if post.save(validate: false)
+      puts "✅ Created post: #{post.title} with ID #{post.id}"
+    else
+      puts "❌ Failed to save post: #{post.title}"
+    end
+
+    # Assign random tags (1 to 5 tags per post)
+    post.tags << tags.sample(rand(1..5)) if post.persisted?
+    puts "✅ Assigned #{post.tags.count} tags to #{post.title}"
   end
 end
