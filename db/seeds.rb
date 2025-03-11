@@ -2,98 +2,101 @@ require 'digest/md5'
 require 'open-uri'
 require 'faker'
 
+# Configure SQLite for better concurrency
+ActiveRecord::Base.connection.execute('PRAGMA busy_timeout = 15000')
+
 def gravatar_url(email, size = 200)
-  hash = Digest::MD5.hexdigest(email.downcase.strip)
-  "https://www.gravatar.com/avatar/#{hash}?s=#{size}&d=identicon"
+  email = email.downcase.strip
+  hash = Digest::MD5.hexdigest(email)
+  "https://www.gravatar.com/avatar/#{hash}?s=#{size}&d=404"
 end
 
-users = [
-  { username: "Sachin Gevariya", email: "s.gevariya@gmail.com", role: "admin", first_name: "Sachin", last_name: "Gevariya" },
-  { username: "essence", email: "essence@gmail.com", role: "user", first_name: "Essence", last_name: "Solusoft" }
-]
+puts "🚀 Starting database seeding process..."
 
-password = "essence@123"
+# Admin User Data
+admin_data = {
+  username: "Sachin Gevariya",
+  email: "s.gevariya@gmail.com",
+  role: "admin",
+  first_name: "Sachin",
+  last_name: "Gevariya",
+  password: "essence@123"
+}
 
-users.each do |user_attrs|
-  user = User.find_or_initialize_by(email: user_attrs[:email])
-
-  if user.new_record?
-    user.assign_attributes(user_attrs.slice(:username, :email, :role).merge(password: password, password_confirmation: password))
-    user.save!
-    puts "✅ Created user: #{user.username} (#{user.role})"
+puts "\n👤 Creating admin user and profile..."
+ActiveRecord::Base.transaction do
+  # Create User
+  admin = User.find_or_initialize_by(email: admin_data[:email])
+  if admin.new_record?
+    admin.assign_attributes(admin_data.slice(:username, :email, :role)
+      .merge(password: admin_data[:password], password_confirmation: admin_data[:password]))
+    admin.save!
+    puts "✅ Created admin user: #{admin.username}"
   else
-    puts "🔹 User already exists: #{user.username} (#{user.role})"
+    puts "👤 Admin user already exists"
   end
 
-  # 🔥 Ensure profile exists and set required fields
-  profile = user.build_profile if user.profile.nil?
+  # Create Profile
+  profile = admin.build_profile if admin.profile.nil?
   profile.assign_attributes(
-    first_name: user_attrs[:first_name],
-    last_name: user_attrs[:last_name],
-    phone: "1234567890",   # Dummy phone number (update as needed)
-    address: "Default Address" # Dummy address (update as needed)
+    first_name: admin_data[:first_name],
+    last_name: admin_data[:last_name],
+    phone: "1234567890",
+    address: "Default Address"
   )
-  profile.save! unless profile.persisted?
-
-  # 🔥 Attach the profile avatar from Gravatar
-  avatar_url = gravatar_url(user.email)
   
+  if !profile.persisted?
+    profile.save!
+    puts "📋 Profile created for admin"
+  end
+
+  # Attach Avatar
+  puts "🖼️ Setting up admin avatar..."
   begin
+    avatar_url = gravatar_url(admin_data[:email])
     file = URI.open(avatar_url)
-    profile.avtar.attach(io: file, filename: "#{user.username.parameterize}.jpg", content_type: 'image/jpeg')
-    puts "🖼️ Profile picture set for: #{user.username}"
+    profile.avtar.attach(io: file, filename: "sachin-gevariya.jpg", content_type: 'image/jpeg')
+    puts "✅ Successfully attached admin avatar"
   rescue OpenURI::HTTPError => e
-    puts "⚠️ Could not fetch profile picture for #{user.username}: #{e.message}"
+    puts "⚠️ Could not fetch Gmail profile picture"
   end
 end
 
-nature_words = %w[
-  forest river ocean mountain valley meadow tree flower grassland desert 
-  waterfall hill glacier canyon reef jungle savanna tundra volcano lake 
-  rain cloud wind sunrise sunset storm thunder lightning mist breeze
-]
+puts "\n🏷️ Creating nature tags..."
+nature_tags = %w[mountain forest ocean sunset sunrise river waterfall beach nature wildlife]
+
 tags = []
-20.times do
-  tag_name = "##{nature_words.sample}" # Ensure name starts with '#'
-  tags << Tag.find_or_create_by!(name: tag_name)
+nature_tags.each do |tag_name|
+  tag = Tag.find_or_create_by!(name: "##{tag_name}")
+  tags << tag
+  puts "🏷️ Created tag: ##{tag_name}"
 end
-puts "🏷️ Created #{tags.count} nature-related tags."
 
-# ✅ Create 4 posts per user
-users.each do |user_attrs|
-  user = User.find_by(email: user_attrs[:email])
+puts "\n📸 Creating posts for admin..."
+admin = User.find_by(email: admin_data[:email])
 
-  4.times do
-    # Use `create` instead of `create!` to avoid exceptions
-    post = user.posts.new(
-      title: Faker::Lorem.sentence(word_count: 5),
-      description: Faker::Lorem.paragraph(sentence_count: 3)
-    )
+4.times do |i|
+  post = admin.posts.new(
+    title: Faker::Lorem.sentence(word_count: 5),
+    description: Faker::Lorem.paragraph(sentence_count: 3)
+  )
 
-    # Fetch and attach a nature image
-    begin
-      image_url = "https://picsum.photos/800/600" # Alternative: Unsplash URL
-      puts "🔗 Fetching image from: #{image_url}"
-
-      file = URI.open(image_url)
-      puts "✅ Image successfully fetched!"
-
-      post.image.attach(io: file, filename: "post_#{post.id}.jpg", content_type: 'image/jpeg')
-    rescue OpenURI::HTTPError => e
-      puts "⚠️ Could not fetch image for post: #{post.title}, error: #{e.message}"
-    rescue StandardError => e
-      puts "❌ Unexpected error: #{e.message}"
-    end
-
-    # **Force save without triggering validation**
-    if post.save(validate: false)
-      puts "✅ Created post: #{post.title} with ID #{post.id}"
-    else
-      puts "❌ Failed to save post: #{post.title}"
-    end
-
-    # Assign random tags (1 to 5 tags per post)
-    post.tags << tags.sample(rand(1..5)) if post.persisted?
-    puts "✅ Assigned #{post.tags.count} tags to #{post.title}"
+  puts "📝 Creating post #{i+1}/4..."
+  begin
+    image_url = "https://picsum.photos/800/600?nature"
+    file = URI.open(image_url)
+    post.image.attach(io: file, filename: "nature_post_#{Time.now.to_i}.jpg", content_type: 'image/jpeg')
+    post.save!(validate: false)
+    
+    # Assign 2-4 random tags to each post
+    tag_count = rand(2..4)
+    post.tags << tags.sample(tag_count)
+    puts "✅ Created post '#{post.title}' with #{tag_count} tags"
+  rescue StandardError => e
+    puts "❌ Error creating post: #{e.message}"
   end
+  
+  sleep(1) # Small delay between posts
 end
+
+puts "\n🎉 Database seeding completed successfully!"
