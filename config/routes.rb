@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   # For webhooks
   post 'webhooks/stripe', to: 'webhooks#stripe'
 
+  # For discourse-sso integration
+  get '/discourse/sso', to: 'discourse_sso#sso'
+
   # For subscriptions
   resources :subscriptions, only: :index
   post 'subscriptions/:stripe_product_id', to: 'subscriptions#create', as: 'subscription_create'
