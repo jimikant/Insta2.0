@@ -37,12 +37,11 @@
         <div class="d-flex align-items-center justify-content-end position-relative p-3 mt-2 gap-3">
           <div class="d-flex flex-column align-items-center gap-2">
             <!-- Display Logged-in User's Name -->
-            <% if (controller_name == "users") && (action_name == "user_index" || action_name == "dashboard") %>
+            <% if current_user %>
               <span class="text-white fw-bold fs-4"><%= current_user.username %></span>  
             <% end %>
-            
             <!-- Display Discourse-Login Button -->
-            <% if ENV['DISCOURSE_SSO_SECRET'].present? && ENV['DISCOURSE_URL'].present? && (controller_name == "users") && (action_name == "user_index" || action_name == "dashboard") %>
+            <% if ENV['DISCOURSE_SSO_SECRET'].present? && ENV['DISCOURSE_URL'].present? && (current_user) %>
               <%= link_to "Login to Discourse", discourse_sso_path, class: "btn btn-sm btn-primary", target: "_blank", rel: "noopener noreferrer" %>
             <% end %>
           </div>
